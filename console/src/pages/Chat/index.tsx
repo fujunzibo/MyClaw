@@ -994,7 +994,7 @@ export default function ChatPage() {
       },
       welcome: {
         ...i18nConfig.welcome,
-        nick: "QwenPaw",
+        nick: "MyClaw",
         avatar: "/qwenpaw.png",
       },
       sender: {

@@ -351,7 +351,7 @@ export function FAQ() {
                     {t("homeFaq.troubleshooting.help.githubIssues")}
                   </a>{" "}
                   {t("homeFaq.troubleshooting.help.s2Mid")}{" "}
-                  <code>qwenpaw_query_error_qzbx1mv1.json</code>
+                  <code>myclaw_query_error_qzbx1mv1.json</code>
                   {t("homeFaq.troubleshooting.help.s2Suffix")}
                 </li>
               </ol>

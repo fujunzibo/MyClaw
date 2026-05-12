@@ -442,7 +442,7 @@ repository and attach the full error message and any error detail file.
 
 Console errors often include a path to an error detail file. For example:
 
-Error: Unknown agent error: AuthenticationError: Error code: 401 - {'error': {'message': "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY). ", 'type': 'invalid_request_error', 'param': None, 'code': None}, 'request_id': 'xxx'}(Details: /var/folders/.../qwenpaw_query_error_qzbx1mv1.json)
+Error: Unknown agent error: AuthenticationError: Error code: 401 - {'error': {'message': "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY). ", 'type': 'invalid_request_error', 'param': None, 'code': None}, 'request_id': 'xxx'}(Details: /var/folders/.../myclaw_query_error_qzbx1mv1.json)
 
-Please upload that file (e.g. `/var/folders/.../qwenpaw_query_error_qzbx1mv1.json`)
+Please upload that file (e.g. `/var/folders/.../myclaw_query_error_qzbx1mv1.json`)
 and also provide your current model provider, model name, and MyClaw version.

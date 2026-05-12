@@ -637,7 +637,7 @@
     "welcomeGreeting": "欢迎语",
     "welcomeText": "欢迎消息",
     "welcomeTextTooltip": "用户当天首次进入机器人单聊会话时机器人自动发送的消息",
-    "welcomeTextPlaceholder": "例如：你好！我是 QwenPaw，有什么可以帮你的？",
+    "welcomeTextPlaceholder": "例如：你好！我是 MyClaw，有什么可以帮你的？",
     "loginWeCom": "获取企业微信二维码",
     "wecomSetupGuide": "使用二维码创建机器人时，授权机器人可使用的能力时请选择「暂不授权」。如果选择了「确认授权」，除了机器人创建者，其他用户可能无法与机器人交互。",
     "wecomScanAuth": "扫码授权",
@@ -1144,7 +1144,7 @@
     "contextManagementTitle": "上下文管理",
     "memoryManagerBackend": "记忆管理后端",
     "memoryManagerBackendTooltip": "记忆管理器的后端类型，目前仅支持 remelight",
-    "memoryManagerBackendRestartWarning": "切换记忆管理后端不支持热更新，保存后需要重启 QwenPaw 才能生效",
+    "memoryManagerBackendRestartWarning": "切换记忆管理后端不支持热更新，保存后需要重启 MyClaw 才能生效",
     "maxIters": "最大迭代次数",
     "maxItersTooltip": "ReAct 智能体的最大推理-行动迭代次数",
     "maxItersPlaceholder": "请输入最大迭代次数",
@@ -1242,7 +1242,7 @@
     "dreamCronTooltip": "设置梦境任务自动整理和优化长期记忆（留空则禁用）",
     "dreamCronPlaceholder": "0 23 * * *",
     "autoMemorySearch": "自动记忆搜索(beta)",
-    "autoMemorySearchTooltip": "每轮对话都自动触发记忆搜索。每次 query 进来都会自动调用记忆搜索能力，让 QwenPaw 更懂你，但会增加 token 消耗。",
+    "autoMemorySearchTooltip": "每轮对话都自动触发记忆搜索。每次 query 进来都会自动调用记忆搜索能力，让 MyClaw 更懂你，但会增加 token 消耗。",
     "autoMaxResults": "自动搜索最大结果数",
     "autoMaxResultsTooltip": "自动记忆搜索时返回的最大结果数",
     "autoMaxResultsRequired": "最大结果数为必填项",
@@ -1324,7 +1324,7 @@
     "recursiveFileWatcherTooltip": "是否递归监听记忆目录。开启后将包含 memory/subdirectory/* 等子目录中的文件到向量搜索索引。",
     "contextManagerBackend": "上下文管理后端",
     "contextManagerBackendTooltip": "上下文管理器的后端类型，目前仅支持 Light",
-    "backendRestartWarning": "切换后端不支持热更新，保存后需要重启 QwenPaw 才能生效"
+    "backendRestartWarning": "切换后端不支持热更新，保存后需要重启 MyClaw 才能生效"
   },
   "tools": {
     "title": "内置工具",
@@ -1653,7 +1653,7 @@
     }
   },
   "login": {
-    "title": "登录 QwenPaw",
+    "title": "登录 MyClaw",
     "registerTitle": "创建账户",
     "firstUserHint": "创建管理员账户以开始使用",
     "usernamePlaceholder": "用户名",
@@ -1715,7 +1715,7 @@
     "providerTypeLocalWhisperDesc": "使用本地安装的 openai-whisper Python 库进行转写。需要同时安装 ffmpeg 和 openai-whisper。",
     "localWhisperReady": "本地 Whisper 已就绪。ffmpeg 和 openai-whisper 均已安装。",
     "localWhisperMissing": "本地 Whisper 未就绪，缺少必要依赖。",
-    "localWhisperMissingDesc": "ffmpeg: {{ffmpeg}} | openai-whisper: {{whisper}}。请安装缺少的依赖：ffmpeg（系统包）和 openai-whisper（uv pip install openai-whisper，或使用 [whisper] 额外依赖安装 QwenPaw）。",
+    "localWhisperMissingDesc": "ffmpeg: {{ffmpeg}} | openai-whisper: {{whisper}}。请安装缺少的依赖：ffmpeg（系统包）和 openai-whisper（uv pip install openai-whisper，或使用 [whisper] 额外依赖安装本应用）。",
     "providerLabel": "Whisper API 提供商",
     "providerDescription": "选择用于 Whisper API 音频转写的提供商。仅显示支持 Whisper 端点的提供商。",
     "providerPlaceholder": "选择提供商...",

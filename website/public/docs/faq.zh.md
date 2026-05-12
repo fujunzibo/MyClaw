@@ -387,6 +387,6 @@ https://help.aliyun.com/zh/model-studio/coding-plan-quickstart#2531c37fd64f9
 
 控制台报错里通常会给出错误文件路径，例如在以下报错中：
 
-Error: Unknown agent error: AuthenticationError: Error code: 401 - {'error': {'message': "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY). ", 'type': 'invalid_request_error', 'param': None, 'code': None}, 'request_id': 'xxx'}(Details: /var/folders/.../qwenpaw_query_error_qzbx1mv1.json)
+Error: Unknown agent error: AuthenticationError: Error code: 401 - {'error': {'message': "You didn't provide an API key. You need to provide your API key in an Authorization header using Bearer auth (i.e. Authorization: Bearer YOUR_KEY). ", 'type': 'invalid_request_error', 'param': None, 'code': None}, 'request_id': 'xxx'}(Details: /var/folders/.../myclaw_query_error_qzbx1mv1.json)
 
-请将后面的`/var/folders/.../qwenpaw_query_error_qzbx1mv1.json`文件一并上传，同时提供你当前的模型提供商、模型名和 MyClaw 的具体版本。
+请将后面的`/var/folders/.../myclaw_query_error_qzbx1mv1.json`文件一并上传，同时提供你当前的模型提供商、模型名和 MyClaw 的具体版本。

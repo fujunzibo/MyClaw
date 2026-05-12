@@ -61,6 +61,7 @@ from .tools import (
 from .utils import process_file_and_media_blocks_in_message
 from ..constant import (
     MEDIA_UNSUPPORTED_PLACEHOLDER,
+    PROJECT_NAME,
     WORKING_DIR,
 )
 from ..providers.model_capability_cache import get_capability_cache
@@ -169,9 +170,14 @@ class QwenPawAgent(ToolGuardMixin, ReActAgent):
             f"Agent '{agent_config.id}' initialized with model: "
             f"{model_info} (class: {model.__class__.__name__})",
         )
+        # Assistant display name in streamed messages / chat UI (AgentScope Msg.name)
+        _raw = (getattr(agent_config, "name", None) or "").strip()
+        if _raw.casefold() == "qwenpaw":
+            _raw = ""
+        agent_display_name = _raw or PROJECT_NAME
         # Initialize parent ReActAgent
         init_kwargs: dict[str, Any] = {
-            "name": "Friday",
+            "name": agent_display_name,
             "model": model,
             "sys_prompt": sys_prompt,
             "toolkit": toolkit,

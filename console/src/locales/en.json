@@ -150,7 +150,7 @@
     "providerTypeLocalWhisperDesc": "Run transcription locally using the openai-whisper Python library. Requires both ffmpeg and openai-whisper to be installed.",
     "localWhisperReady": "Local Whisper is ready. Both ffmpeg and openai-whisper are installed.",
     "localWhisperMissing": "Local Whisper is not ready. Missing dependencies must be installed.",
-    "localWhisperMissingDesc": "ffmpeg: {{ffmpeg}} | openai-whisper: {{whisper}}. Install missing dependencies: ffmpeg (system package) and openai-whisper (uv pip install openai-whisper, or install QwenPaw with the [whisper] extra).",
+    "localWhisperMissingDesc": "ffmpeg: {{ffmpeg}} | openai-whisper: {{whisper}}. Install missing dependencies: ffmpeg (system package) and openai-whisper (uv pip install openai-whisper, or install with the [whisper] extra).",
     "providerLabel": "Whisper API Provider",
     "providerDescription": "Select which provider to use for audio transcription via the Whisper API. Only providers with a Whisper-compatible endpoint are shown.",
     "providerPlaceholder": "Select a provider...",
@@ -774,7 +774,7 @@
     "welcomeGreeting": "Welcome Greeting",
     "welcomeText": "Welcome Message",
     "welcomeTextTooltip": "Message automatically sent when a user enters a single chat session with the bot for the first time that day",
-    "welcomeTextPlaceholder": "e.g. Hello! I'm QwenPaw. How can I help you?",
+    "welcomeTextPlaceholder": "e.g. Hello! I'm MyClaw. How can I help you?",
     "loginWeCom": "Get WeCom QR Code",
     "wecomSetupGuide": "When creating a bot via QR code, please select \"Skip Authorization\" when asked to authorize bot capabilities. If you select \"Confirm Authorization\", users other than the bot creator may not be able to interact with the bot.",
     "wecomScanAuth": "Scan to Authorize",
@@ -1281,7 +1281,7 @@
     "contextManagementTitle": "Context Management",
     "memoryManagerBackend": "Memory Manager Backend",
     "memoryManagerBackendTooltip": "Backend for the memory manager. Currently only remelight is supported.",
-    "memoryManagerBackendRestartWarning": "Switching the memory manager backend does not support hot reload. Save and restart QwenPaw for changes to take effect.",
+    "memoryManagerBackendRestartWarning": "Switching the memory manager backend does not support hot reload. Save and restart MyClaw for changes to take effect.",
     "maxIters": "Max Iterations",
     "maxItersTooltip": "Maximum number of reasoning-acting iterations for ReAct agent",
     "maxItersPlaceholder": "Enter max iterations",
@@ -1379,7 +1379,7 @@
     "dreamCronTooltip": "Cron expression for periodically optimizing long-term memories through dream state (leave empty to disable)",
     "dreamCronPlaceholder": "0 23 * * *",
     "autoMemorySearch": "Auto Memory Search (beta)",
-    "autoMemorySearchTooltip": "Auto memory search to run on every conversation turn. Each query will automatically invoke memory search capabilities, helping QwenPaw understand you better — but this increases token consumption.",
+    "autoMemorySearchTooltip": "Auto memory search to run on every conversation turn. Each query will automatically invoke memory search capabilities, helping MyClaw understand you better — but this increases token consumption.",
     "autoMaxResults": "Auto Search Max Results",
     "autoMaxResultsTooltip": "Maximum number of results returned when auto memory search is enabled",
     "autoMaxResultsRequired": "Max results is required",
@@ -1461,7 +1461,7 @@
     "recursiveFileWatcherTooltip": "Watch the memory directory recursively. Enable to include files in subdirectories like memory/subdirectory/* in vector search indexing.",
     "contextManagerBackend": "Context Manager Backend",
     "contextManagerBackendTooltip": "Backend type for the context manager. Currently only Light is supported.",
-    "backendRestartWarning": "Switching backends does not support hot reload. Save and restart QwenPaw for changes to take effect."
+    "backendRestartWarning": "Switching backends does not support hot reload. Save and restart MyClaw for changes to take effect."
   },
   "tools": {
     "title": "Built-in Tools",
@@ -1790,7 +1790,7 @@
     }
   },
   "login": {
-    "title": "Login to QwenPaw",
+    "title": "Login to MyClaw",
     "registerTitle": "Create Account",
     "firstUserHint": "Create your admin account to get started",
     "usernamePlaceholder": "Username",
