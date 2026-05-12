@@ -1,5 +1,5 @@
 /**
- * QwenPaw mascot (same as logo symbol). Used in Hero and Nav.
+ * Paw mark (same as console). Used in Hero and Nav.
  */
 import { CatPawIcon } from "./CatPawIcon";
 

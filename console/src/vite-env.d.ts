@@ -1,5 +1,17 @@
 /// <reference types="vite/client" />
 
+interface ImportMetaEnv {
+  /**
+   * Optional base URL for the public docs / marketing site (no trailing slash).
+   * Example: http://localhost:5173 when running `website` via Vite dev.
+   */
+  readonly VITE_DOCS_SITE_URL?: string;
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
+
 declare module "dayjs" {
   interface Dayjs {
     fromNow(withoutSuffix?: boolean): string;

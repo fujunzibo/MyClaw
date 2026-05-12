@@ -529,7 +529,7 @@ Use `/model openai:gpt-4o` to switch to this model.
 
 ## System Control Commands
 
-Commands for controlling and monitoring QwenPaw's runtime status. These commands execute directly without going through the Agent.
+Commands for controlling and monitoring MyClaw's runtime status. These commands execute directly without going through the Agent.
 
 Send `/daemon <subcommand>` or short names (e.g., `/status`) in chat, or run `qwenpaw daemon <subcommand>` from the terminal.
 
@@ -609,7 +609,7 @@ qwenpaw daemon reload-config      # From terminal
 
 ### /daemon version - Version Information
 
-Display QwenPaw version number, working directory path, and log file path.
+Display MyClaw version number, working directory path, and log file path.
 
 **Usage:**
 

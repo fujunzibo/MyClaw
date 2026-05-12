@@ -1,6 +1,6 @@
 # Long-term Memory
 
-**Long-term Memory** gives QwenPaw persistent memory across conversations: writes key information to Markdown files for
+**Long-term Memory** gives MyClaw persistent memory across conversations: writes key information to Markdown files for
 long-term storage, with semantic search for recall at any time.
 
 > The long-term memory mechanism is inspired by [OpenClaw](https://github.com/openclaw/openclaw) and implemented via **ReMeLight** from [ReMe](https://github.com/agentscope-ai/ReMe) — a file-based memory backend where memories are plain Markdown files that can be read, edited, and migrated directly.
@@ -175,7 +175,7 @@ graph LR
 
 ## Backup & Restore
 
-Backup & Restore is QwenPaw's backup and recovery capability, enabling safe saving and restoration of the entire agent environment for scenarios like version upgrades, cross-device migration, or undoing mistakes. Access: Console → Settings → Backup.
+Backup & Restore is MyClaw's backup and recovery capability, enabling safe saving and restoration of the entire agent environment for scenarios like version upgrades, cross-device migration, or undoing mistakes. Access: Console → Settings → Backup.
 
 ### Creating Backups
 

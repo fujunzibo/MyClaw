@@ -22,6 +22,12 @@ logger = logging.getLogger(__name__)
 
 DASHSCOPE_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 CODING_DASHSCOPE_BASE_URL = "https://coding.dashscope.aliyuncs.com/v1"
+CODING_INTL_DASHSCOPE_BASE_URL = "https://coding-intl.dashscope.aliyuncs.com/v1"
+
+
+def _normalized_openai_base_url(url: str) -> str:
+    return (url or "").strip().rstrip("/")
+
 
 if os.environ.get("LANGFUSE_SECRET_KEY") and importlib.util.find_spec(
     "langfuse",
@@ -140,11 +146,12 @@ class OpenAIProvider(Provider):
 
         client_kwargs = {"base_url": self.base_url}
 
-        if self.base_url == DASHSCOPE_BASE_URL:
+        bu = _normalized_openai_base_url(self.base_url)
+        if bu == _normalized_openai_base_url(DASHSCOPE_BASE_URL):
             client_kwargs["default_headers"] = {
                 "x-dashscope-agentapp": json.dumps(
                     {
-                        "agentType": "QwenPaw",
+                        "agentType": "MyClaw",
                         "deployType": "UnKnown",
                         "moduleCode": "model",
                         "agentCode": "UnKnown",
@@ -152,11 +159,14 @@ class OpenAIProvider(Provider):
                     ensure_ascii=False,
                 ),
             }
-        elif self.base_url == CODING_DASHSCOPE_BASE_URL:
+        elif bu in (
+            _normalized_openai_base_url(CODING_DASHSCOPE_BASE_URL),
+            _normalized_openai_base_url(CODING_INTL_DASHSCOPE_BASE_URL),
+        ):
             client_kwargs["default_headers"] = {
                 "X-DashScope-Cdpl": json.dumps(
                     {
-                        "agentType": "QwenPaw",
+                        "agentType": "MyClaw",
                         "deployType": "UnKnown",
                         "moduleCode": "model",
                         "agentCode": "UnKnown",

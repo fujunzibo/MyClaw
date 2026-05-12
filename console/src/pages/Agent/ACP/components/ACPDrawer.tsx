@@ -15,7 +15,10 @@ import {
   type ACPAgentConfig,
   type ACPToolParseMode,
 } from "../../../../api/types";
-import { getWebsiteLang } from "../../../../layouts/constants";
+import {
+  getWebsiteLang,
+  PUBLIC_DOCS_SITE_BASE,
+} from "../../../../layouts/constants";
 import styles from "../../../Control/Channels/index.module.less";
 
 interface ACPDrawerProps {
@@ -47,7 +50,7 @@ function getACPDocsUrl(lang: string): string {
   const websiteLang = getWebsiteLang(lang);
   const hash =
     websiteLang === "zh" ? ACP_DOC_SECTION_HASH.zh : ACP_DOC_SECTION_HASH.en;
-  return `https://qwenpaw.agentscope.io/docs/acp-integration?lang=${websiteLang}#${hash}`;
+  return `${PUBLIC_DOCS_SITE_BASE}/docs/acp-integration?lang=${websiteLang}#${hash}`;
 }
 
 export function parseArgsText(value: unknown): string[] {

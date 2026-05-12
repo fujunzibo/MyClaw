@@ -51,7 +51,6 @@ import {
   copyText,
   extractCopyableText,
   buildModelError,
-  normalizeContentUrls,
   extractUserMessageText,
   extractTextFromMessage,
   setTextareaValue,
@@ -867,19 +866,9 @@ export default function ChatPage() {
       const { input = [], biz_params } = data;
       const session: SessionInfo = input[input.length - 1]?.session || {};
       const lastInput = input.slice(-1);
-      const lastMsg = lastInput[0];
-      const rewrittenInput =
-        lastMsg?.content && Array.isArray(lastMsg.content)
-          ? [
-              {
-                ...lastMsg,
-                content: lastMsg.content.map(normalizeContentUrls),
-              },
-            ]
-          : lastInput;
 
       const requestBody = {
-        input: rewrittenInput,
+        input: lastInput,
         session_id: window.currentSessionId || session?.session_id || "",
         user_id: window.currentUserId || session?.user_id || DEFAULT_USER_ID,
         channel: window.currentChannel || session?.channel || DEFAULT_CHANNEL,
@@ -892,7 +881,7 @@ export default function ChatPage() {
         chatIdRef.current ??
         requestBody.session_id;
       if (backendChatId) {
-        const userText = rewrittenInput
+        const userText = lastInput
           .filter((m: any) => m.role === "user")
           .map(extractUserMessageText)
           .join("\n")

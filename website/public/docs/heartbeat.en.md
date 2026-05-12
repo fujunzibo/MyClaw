@@ -1,9 +1,9 @@
 # Heartbeat
 
-In QwenPaw, **heartbeat** means: on a fixed interval, ask QwenPaw the
-“questions” you wrote in a file, and optionally send the QwenPaw’s reply to
+In MyClaw, **heartbeat** means: on a fixed interval, ask MyClaw the
+“questions” you wrote in a file, and optionally send the MyClaw’s reply to
 **the channel where you last chatted**. Good for “regular check-ins, daily
-digests, scheduled reminders” — QwenPaw runs without you sending a
+digests, scheduled reminders” — MyClaw runs without you sending a
 message.
 
 With **multiple agents**, each agent has its own **HEARTBEAT.md** and
@@ -20,16 +20,16 @@ heartbeat and channels.
 
 1. In the current agent’s workspace there is a **heartbeat query file** (default
    name **HEARTBEAT.md**; rename with env **`QWENPAW_HEARTBEAT_FILE`**). Its
-   content is **what to ask QwenPaw on each run** (one or more paragraphs; QwenPaw
+   content is **what to ask MyClaw on each run** (one or more paragraphs; MyClaw
    treats it as one user message).
 2. When **`enabled` is true** in config, the system runs on your **every**
    value (**interval string** or **five-field cron**): read that file → send as
-   the user message → QwenPaw replies.
+   the user message → MyClaw replies.
 3. **Whether the reply goes to a channel** is set by **target**:
-   - **main** — Run QwenPaw only; don’t send the reply to any channel (e.g. local
+   - **main** — Run MyClaw only; don’t send the reply to any channel (e.g. local
      self-check, logs).
    - **last** — Send the reply to the **channel/session where you last talked
-     to QwenPaw** (e.g. if you last used DingTalk, the heartbeat reply goes to
+     to MyClaw** (e.g. if you last used DingTalk, the heartbeat reply goes to
      DingTalk).
 
 You can also set **active hours**: heartbeat only runs in that daily window
@@ -91,7 +91,7 @@ source of truth for new changes.
 If **every** is omitted, the built-in default applies (currently about **6
 hours** — confirm in your installed version).
 
-Example (heartbeat on, QwenPaw only, no channel, every 30m) — in that agent’s
+Example (heartbeat on, MyClaw only, no channel, every 30m) — in that agent’s
 **`agent.json`**:
 
 ```json

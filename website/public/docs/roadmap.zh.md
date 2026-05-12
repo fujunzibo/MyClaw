@@ -9,14 +9,14 @@
 | **多智能体**           | HiClaw 接入：多租、跨域合作                               | 进行中 |
 |                        | Agent Swarm / Team                                        | 计划中 |
 | **大小模型协同**       | 端云模型智能切换                                          | 进行中 |
-| **QwenPaw 定制模型**   | 支持多模态模型                                            | 计划中 |
+| **MyClaw 定制模型**   | 支持多模态模型                                            | 计划中 |
 | **记忆系统**           | 场景感知主动推送                                          | 进行中 |
 | **上下文管理**         | 抽象设计                                                  | 进行中 |
 |                        | 上下文智能压缩                                            | 计划中 |
 |                        | 用户可选压缩（细粒度控制）                                | 计划中 |
 | **版本管理与可迁移**   | 一键打包、多版本/多设备迁移                               | 进行中 |
-|                        | Agent 协议：QwenPaw → QwenPaw                             | 进行中 |
-|                        | Agent 协议：OpenClaw → QwenPaw                            | 计划中 |
+|                        | Agent 协议：MyClaw → MyClaw                             | 进行中 |
+|                        | Agent 协议：OpenClaw → MyClaw                            | 计划中 |
 |                        | 文件区 / chat 回滚                                        | 进行中 |
 | **可靠性与自我运维**   | 自我更新                                                  | 计划中 |
 |                        | 失败回滚                                                  | 计划中 |
@@ -29,7 +29,7 @@ _状态说明：**进行中** — 正在积极开发；**计划中** — 已排�
 
 ## 参与贡献
 
-QwenPaw 在开放协作中持续演进，欢迎各种形式的参与！请参考上表（尤其是标记为 **征集中** 的项）选择你感兴趣的方向，并阅读 [CONTRIBUTING](https://github.com/agentscope-ai/QwenPaw/blob/main/CONTRIBUTING.md) 了解如何开始。我们特别欢迎：
+MyClaw 在开放协作中持续演进，欢迎各种形式的参与！请参考上表（尤其是标记为 **征集中** 的项）选择你感兴趣的方向，并阅读 [CONTRIBUTING](https://github.com/agentscope-ai/QwenPaw/blob/main/CONTRIBUTING.md) 了解如何开始。我们特别欢迎：
 
 - **横向拓展** — 新频道、模型提供商、技能、MCP。
 - **已有功能扩展与完善** — 展示与交互优化、下载提示、Windows 路径兼容等。

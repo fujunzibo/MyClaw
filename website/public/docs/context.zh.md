@@ -6,11 +6,11 @@ LLM 的上下文窗口就像一个**有限容量的背包** 🎒。每次对话�
 
 **上下文管理**就是一套帮你"管理背包"的机制，确保 AI 能够持续、高效地工作。
 
-> 上下文管理机制设计受 [OpenClaw](https://github.com/openclaw/openclaw) 启发，由 QwenPaw 的 **LightContextManager** 独立实现。
+> 上下文管理机制设计受 [OpenClaw](https://github.com/openclaw/openclaw) 启发，由 MyClaw 的 **LightContextManager** 独立实现。
 
 ### 工作原理 — 总结
 
-QwenPaw 上下文管理分为两条并行的 Offload 路径，共同解决上下文窗口有限的问题：
+MyClaw 上下文管理分为两条并行的 Offload 路径，共同解决上下文窗口有限的问题：
 
 | 机制                 | 触发时机              | Offload 目标              | 保留在上下文的内容                   |
 | -------------------- | --------------------- | ------------------------- | ------------------------------------ |
@@ -37,7 +37,7 @@ flowchart LR
 
 ### 内存中的数据结构
 
-QwenPaw 的上下文由两部分组成：
+MyClaw 的上下文由两部分组成：
 
 ```mermaid
 flowchart TD
@@ -143,7 +143,7 @@ flowchart LR
 
 ## 压缩机制
 
-当上下文接近限制时，QwenPaw 会自动触发压缩，将旧对话浓缩为结构化摘要。
+当上下文接近限制时，MyClaw 会自动触发压缩，将旧对话浓缩为结构化摘要。
 
 ### 1. compact_tool_result — 工具结果压缩
 

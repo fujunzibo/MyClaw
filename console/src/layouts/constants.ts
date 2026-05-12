@@ -2,8 +2,6 @@
 
 export const PYPI_URL = "https://pypi.org/pypi/qwenpaw/json";
 
-export const GITHUB_URL = "https://github.com/agentscope-ai/QwenPaw" as const;
-
 // ── Timing ────────────────────────────────────────────────────────────────
 
 export const ONE_HOUR_MS = 60 * 60 * 1000;
@@ -65,17 +63,25 @@ export const KEY_TO_LABEL: Record<string, string> = {
 
 // ── URL helpers ───────────────────────────────────────────────────────────
 
+/**
+ * Public docs / marketing site origin. Default: local Vite dev server for `website/`.
+ * Override with `VITE_DOCS_SITE_URL` (e.g. other port or production site).
+ */
+export const PUBLIC_DOCS_SITE_BASE =
+  import.meta.env.VITE_DOCS_SITE_URL?.trim().replace(/\/$/, "") ||
+  "http://127.0.0.1:5173";
+
 export const getWebsiteLang = (lang: string): string =>
   lang.startsWith("zh") ? "zh" : "en";
 
 export const getDocsUrl = (lang: string): string =>
-  `https://qwenpaw.agentscope.io/docs/intro?lang=${getWebsiteLang(lang)}`;
+  `${PUBLIC_DOCS_SITE_BASE}/docs/intro?lang=${getWebsiteLang(lang)}`;
 
 export const getFaqUrl = (lang: string): string =>
-  `https://qwenpaw.agentscope.io/docs/faq?lang=${getWebsiteLang(lang)}`;
+  `${PUBLIC_DOCS_SITE_BASE}/docs/faq?lang=${getWebsiteLang(lang)}`;
 
 export const getReleaseNotesUrl = (lang: string): string =>
-  `https://qwenpaw.agentscope.io/release-notes?lang=${getWebsiteLang(lang)}`;
+  `${PUBLIC_DOCS_SITE_BASE}/release-notes?lang=${getWebsiteLang(lang)}`;
 
 // ── Version helpers ────────────────────────────────────────────────────────
 
@@ -129,9 +135,9 @@ export const compareVersions = (a: string, b: string): number => {
 // ── Update markdown ───────────────────────────────────────────────────────
 // TODO
 export const UPDATE_MD: Record<string, string> = {
-  zh: `### QwenPaw如何更新
+  zh: `### MyClaw如何更新
 
-要更新 QwenPaw 到最新版本，可根据你的安装方式选择对应方法：
+要更新 MyClaw 到最新版本，可根据你的安装方式选择对应方法：
 
 1. 如果你使用的是一键安装脚本，直接重新运行安装命令即可自动升级。
 
@@ -161,9 +167,9 @@ docker run -p 127.0.0.1:8088:8088 -v qwenpaw-data:/app/working agentscope/qwenpa
 
 升级后重启服务 qwenpaw app。`,
 
-  ru: `### Как обновить QwenPaw
+  ru: `### Как обновить MyClaw
 
-Чтобы обновить QwenPaw, выберите способ в зависимости от типа установки:
+Чтобы обновить MyClaw, выберите способ в зависимости от типа установки:
 
 1. Если вы устанавливали через однострочный скрипт, повторно запустите установщик для обновления.
 
@@ -193,9 +199,9 @@ docker run -p 127.0.0.1:8088:8088 -v qwenpaw-data:/app/working agentscope/qwenpa
 
 After upgrading, restart the service with \`qwenpaw app\`.`,
 
-  en: `### How to update QwenPaw
+  en: `### How to update MyClaw
 
-To update QwenPaw, use the method matching your installation type:
+To update MyClaw, use the method matching your installation type:
 
 1. If installed via one-line script, re-run the installer to upgrade.
 

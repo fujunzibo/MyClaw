@@ -1,6 +1,6 @@
 # Plugin System
 
-QwenPaw provides a plugin system that allows users to extend QwenPaw's functionality.
+MyClaw provides a plugin system that allows users to extend MyClaw's functionality.
 
 ## Overview
 
@@ -35,7 +35,7 @@ Force reinstall:
 qwenpaw plugin install /path/to/plugin --force
 ```
 
-**Note**: Plugin operations can only be performed when QwenPaw is offline.
+**Note**: Plugin operations can only be performed when MyClaw is offline.
 
 ### List Installed Plugins
 
@@ -392,13 +392,13 @@ plugin = MyLLMProviderPlugin()
 # Install plugin
 qwenpaw plugin install my-llm-provider
 
-# Start QwenPaw
+# Start MyClaw
 qwenpaw app
 ```
 
 ### Example 2: Add Startup Hook
 
-Let's say you want to initialize a monitoring service when QwenPaw starts.
+Let's say you want to initialize a monitoring service when MyClaw starts.
 
 #### 1. Create Plugin
 
@@ -454,7 +454,7 @@ class MonitoringHookPlugin:
 
                 # Initialize your monitoring service
                 # from my_monitoring import init_monitoring
-                # init_monitoring(app_name="QwenPaw")
+                # init_monitoring(app_name="MyClaw")
 
                 logger.info("✓ Monitoring initialized successfully")
 
@@ -664,7 +664,7 @@ const { Title, Paragraph } = Typography;
 function WelcomePage() {
   return (
     <Card style={{ maxWidth: 480, margin: "40px auto" }}>
-      <Title level={2}>Welcome to QwenPaw 👋</Title>
+      <Title level={2}>Welcome to MyClaw 👋</Title>
       <Paragraph>Plugin system is working!</Paragraph>
     </Card>
   );
@@ -866,7 +866,7 @@ class CustomGreetingPlugin {
     }
 
     // Replace chat greeting
-    mod.configProvider.getGreeting = () => "Hello! I'm customized QwenPaw 👋";
+    mod.configProvider.getGreeting = () => "Hello! I'm customized MyClaw 👋";
 
     // Replace chat description
     mod.configProvider.getDescription = () =>
@@ -995,7 +995,7 @@ api.register_startup_hook("late", callback, priority=200)
    qwenpaw plugin list
    ```
 
-2. View QwenPaw logs:
+2. View MyClaw logs:
 
    ```bash
    tail -f ~/.qwenpaw/logs/qwenpaw.log | grep -i plugin
@@ -1017,7 +1017,7 @@ api.register_startup_hook("late", callback, priority=200)
 
 ### Provider Not Showing
 
-1. Confirm plugin is installed and restart QwenPaw
+1. Confirm plugin is installed and restart MyClaw
 2. Check the model management page in Web UI
 3. Review provider registration info in logs
 
@@ -1029,10 +1029,10 @@ api.register_startup_hook("late", callback, priority=200)
 
 ## Security Considerations
 
-1. **Only install trusted plugins**: Plugin code executes in the QwenPaw process
+1. **Only install trusted plugins**: Plugin code executes in the MyClaw process
 2. **Check dependencies**: Ensure plugin dependencies come from trusted sources
 3. **Review code**: Review plugin source code before installation
-4. **Offline operations**: Plugin install/uninstall requires QwenPaw to be offline
+4. **Offline operations**: Plugin install/uninstall requires MyClaw to be offline
 
 ## PluginApi Reference
 
@@ -1078,7 +1078,7 @@ api.register_shutdown_hook(
 
 ### Monkey Patching
 
-For plugins that need to modify QwenPaw behavior (like custom commands), you can use monkey patching:
+For plugins that need to modify MyClaw behavior (like custom commands), you can use monkey patching:
 
 ```python
 def _patch_query_handler(self):
@@ -1128,7 +1128,7 @@ qwenpaw plugin install https://example.com/my-plugin-1.0.0.zip
 
 ## FAQ
 
-### Q: What QwenPaw APIs can plugins access?
+### Q: What MyClaw APIs can plugins access?
 
 A: Plugins access core functionality through `PluginApi`, including:
 
@@ -1136,7 +1136,7 @@ A: Plugins access core functionality through `PluginApi`, including:
 - Hook registration
 - Runtime helpers (provider_manager, etc.)
 
-### Q: Can plugins modify QwenPaw's core behavior?
+### Q: Can plugins modify MyClaw's core behavior?
 
 A: Yes, through monkey patching or hook mechanisms. But use with caution to avoid breaking core functionality.
 

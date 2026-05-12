@@ -63,6 +63,13 @@ MODELSCOPE_MODELS: List[ModelInfo] = [
 
 DASHSCOPE_MODELS: List[ModelInfo] = [
     ModelInfo(
+        id="qwen3.6-plus",
+        name="Qwen3.6 Plus",
+        supports_image=True,
+        supports_video=True,
+        probe_source="documentation",
+    ),
+    ModelInfo(
         id="qwen3-max",
         name="Qwen3 Max",
         supports_image=False,
@@ -581,7 +588,7 @@ PROVIDER_ZHIPU_INTL_CODINGPLAN = OpenAIProvider(
 
 PROVIDER_QWENPAW = OpenAIProvider(
     id="qwenpaw-local",
-    name="QwenPaw Local",
+    name="MyClaw Local",
     is_local=True,
     require_api_key=False,
 )

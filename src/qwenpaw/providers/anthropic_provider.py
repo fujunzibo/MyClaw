@@ -24,6 +24,11 @@ logger = logging.getLogger(__name__)
 
 DASHSCOPE_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 CODING_DASHSCOPE_BASE_URL = "https://coding.dashscope.aliyuncs.com/v1"
+CODING_INTL_DASHSCOPE_BASE_URL = "https://coding-intl.dashscope.aliyuncs.com/v1"
+
+
+def _normalized_anthropic_base_url(url: str) -> str:
+    return (url or "").strip().rstrip("/")
 
 
 class AnthropicProvider(Provider):
@@ -131,7 +136,8 @@ class AnthropicProvider(Provider):
         from agentscope.model import AnthropicChatModel
 
         client_kwargs = {"base_url": self.base_url}
-        if self.base_url == DASHSCOPE_BASE_URL:
+        bu = _normalized_anthropic_base_url(self.base_url)
+        if bu == _normalized_anthropic_base_url(DASHSCOPE_BASE_URL):
             client_kwargs["default_headers"] = {
                 "x-dashscope-agentapp": json.dumps(
                     {
@@ -143,7 +149,10 @@ class AnthropicProvider(Provider):
                     ensure_ascii=False,
                 ),
             }
-        elif self.base_url == CODING_DASHSCOPE_BASE_URL:
+        elif bu in (
+            _normalized_anthropic_base_url(CODING_DASHSCOPE_BASE_URL),
+            _normalized_anthropic_base_url(CODING_INTL_DASHSCOPE_BASE_URL),
+        ):
             client_kwargs["default_headers"] = {
                 "X-DashScope-Cdpl": json.dumps(
                     {

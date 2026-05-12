@@ -6,10 +6,10 @@ import { Button, Modal } from "@agentscope-ai/design";
 import styles from "./index.module.less";
 import api from "../api";
 import {
-  GITHUB_URL,
   getDocsUrl,
   getFaqUrl,
   getReleaseNotesUrl,
+  PUBLIC_DOCS_SITE_BASE,
   PYPI_URL,
   ONE_HOUR_MS,
   UPDATE_MD,
@@ -120,12 +120,14 @@ export default function Header() {
       ? "ru"
       : "en";
     const faqLang = lang === "zh" ? "zh" : "en";
-    const url = `https://qwenpaw.agentscope.io/docs/faq.${faqLang}.md`;
+    const url = `${PUBLIC_DOCS_SITE_BASE}/docs/faq.${faqLang}.md`;
     fetch(url, { cache: "no-cache" })
       .then((res) => (res.ok ? res.text() : Promise.reject()))
       .then((text) => {
-        const zhPattern = /###\s*QwenPaw如何更新[\s\S]*?(?=\n###|$)/;
-        const enPattern = /###\s*How to update QwenPaw[\s\S]*?(?=\n###|$)/;
+        const zhPattern =
+          /###\s*(?:MyClaw|QwenPaw)如何更新[\s\S]*?(?=\n###|$)/;
+        const enPattern =
+          /###\s*How to update (?:MyClaw|QwenPaw)[\s\S]*?(?=\n###|$)/;
         const match = text.match(faqLang === "zh" ? zhPattern : enPattern);
         setUpdateMarkdown(
           match && lang !== "ru"
@@ -154,10 +156,12 @@ export default function Header() {
       <AntHeader className={styles.header}>
         <div className={styles.logoWrapper}>
           <img
-            src={isDark ? "/logo-dark.svg" : "/logo-light.svg"}
-            alt="QwenPaw"
-            className={styles.logoImg}
+            src={isDark ? "/logo-mark-dark.svg" : "/logo-mark-light.svg"}
+            alt=""
+            className={styles.logoMarkImg}
+            aria-hidden
           />
+          <span className={styles.brandName}>{t("header.brandName")}</span>
           <div className={styles.logoDivider} />
           {version && (
             <Badge
@@ -201,11 +205,6 @@ export default function Header() {
               onClick={() => handleNavClick(getFaqUrl(i18n.language))}
             >
               {t("header.faq")}
-            </Button>
-          </Tooltip>
-          <Tooltip title={t("header.github")}>
-            <Button type="text" onClick={() => handleNavClick(GITHUB_URL)}>
-              {t("header.github")}
             </Button>
           </Tooltip>
           <div className={styles.headerDivider} />

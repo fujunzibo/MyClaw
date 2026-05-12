@@ -1,6 +1,6 @@
 # 插件系统
 
-QwenPaw 提供了插件系统，允许用户扩展 QwenPaw 的功能。
+MyClaw 提供了插件系统，允许用户扩展 MyClaw 的功能。
 
 ## 概述
 
@@ -35,7 +35,7 @@ qwenpaw plugin install https://example.com/plugin.zip
 qwenpaw plugin install /path/to/plugin --force
 ```
 
-**注意**：插件操作只能在 QwenPaw 离线时执行。
+**注意**：插件操作只能在 MyClaw 离线时执行。
 
 ### 列出已安装插件
 
@@ -392,7 +392,7 @@ plugin = MyLLMProviderPlugin()
 # 安装插件
 qwenpaw plugin install my-llm-provider
 
-# 启动 QwenPaw
+# 启动 MyClaw
 qwenpaw app
 
 # 在 Web UI 中配置 API Key
@@ -401,7 +401,7 @@ qwenpaw app
 
 ### 示例 2：添加启动钩子
 
-假设你想在 QwenPaw 启动时初始化一个监控服务。
+假设你想在 MyClaw 启动时初始化一个监控服务。
 
 #### 1. 创建插件
 
@@ -457,7 +457,7 @@ class MonitoringHookPlugin:
 
                 # 初始化你的监控服务
                 # from my_monitoring import init_monitoring
-                # init_monitoring(app_name="QwenPaw")
+                # init_monitoring(app_name="MyClaw")
 
                 logger.info("✓ Monitoring initialized successfully")
 
@@ -667,7 +667,7 @@ const { Title, Paragraph } = Typography;
 function WelcomePage() {
   return (
     <Card style={{ maxWidth: 480, margin: "40px auto" }}>
-      <Title level={2}>Welcome to QwenPaw 👋</Title>
+      <Title level={2}>Welcome to MyClaw 👋</Title>
       <Paragraph>插件系统运行正常！</Paragraph>
     </Card>
   );
@@ -851,7 +851,7 @@ class CustomGreetingPlugin {
     }
 
     // 替换聊天欢迎语
-    mod.configProvider.getGreeting = () => "你好！我是定制版 QwenPaw 👋";
+    mod.configProvider.getGreeting = () => "你好！我是定制版 MyClaw 👋";
 
     // 替换聊天描述
     mod.configProvider.getDescription = () => "这是一个定制化的聊天助手";
@@ -979,7 +979,7 @@ api.register_startup_hook("late", callback, priority=200)
    qwenpaw plugin list
    ```
 
-2. 查看 QwenPaw 日志：
+2. 查看 MyClaw 日志：
 
    ```bash
    tail -f ~/.qwenpaw/logs/qwenpaw.log | grep -i plugin
@@ -1001,7 +1001,7 @@ api.register_startup_hook("late", callback, priority=200)
 
 ### Provider 未显示
 
-1. 确认插件已安装并重启 QwenPaw
+1. 确认插件已安装并重启 MyClaw
 2. 检查 Web UI 的模型管理页面
 3. 查看日志中的 provider 注册信息
 
@@ -1013,10 +1013,10 @@ api.register_startup_hook("late", callback, priority=200)
 
 ## 安全注意事项
 
-1. **只安装可信插件**：插件代码会在 QwenPaw 进程中执行
+1. **只安装可信插件**：插件代码会在 MyClaw 进程中执行
 2. **检查依赖**：确保插件依赖来自可信源
 3. **审查代码**：安装前审查插件源代码
-4. **离线操作**：插件安装/卸载需要 QwenPaw 离线
+4. **离线操作**：插件安装/卸载需要 MyClaw 离线
 
 ## PluginApi 参考
 
@@ -1062,7 +1062,7 @@ api.register_shutdown_hook(
 
 ### Monkey Patch
 
-对于需要修改 QwenPaw 行为的插件（如自定义命令），可以使用 monkey patch：
+对于需要修改 MyClaw 行为的插件（如自定义命令），可以使用 monkey patch：
 
 ```python
 def _patch_query_handler(self):
@@ -1112,7 +1112,7 @@ qwenpaw plugin install https://example.com/my-plugin-1.0.0.zip
 
 ## 常见问题
 
-### Q: 插件可以访问哪些 QwenPaw API？
+### Q: 插件可以访问哪些 MyClaw API？
 
 A: 插件通过 `PluginApi` 访问核心功能，包括：
 
@@ -1120,7 +1120,7 @@ A: 插件通过 `PluginApi` 访问核心功能，包括：
 - Hook 注册
 - Runtime helpers（provider_manager 等）
 
-### Q: 插件可以修改 QwenPaw 的核心行为吗？
+### Q: 插件可以修改 MyClaw 的核心行为吗？
 
 A: 可以，通过 monkey patch 或 hook 机制。但请谨慎使用，确保不会破坏核心功能。
 

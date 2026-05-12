@@ -1268,6 +1268,7 @@
     "modelNotConfigured": "チャットを使用する前に設定でモデルを設定してください"
   },
   "header": {
+    "brandName": "MyClaw",
     "changelog": "変更履歴",
     "docs": "ドキュメント",
     "tutorial": "チュートリアル",

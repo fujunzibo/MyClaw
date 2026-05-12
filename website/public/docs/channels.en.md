@@ -1,6 +1,6 @@
 # Channels
 
-A **channel** is where you talk to QwenPaw: connect DingTalk and it replies
+A **channel** is where you talk to MyClaw: connect DingTalk and it replies
 in DingTalk; same for QQ, etc. If that term is new, see [Introduction](./intro).
 
 Two ways to configure channels:
@@ -51,7 +51,7 @@ Step-by-step:
 
    ![client](https://img.alicdn.com/imgextra/i3/O1CN01JsRrwx1hJImLfM7O1_!!6000000004256-2-tps-2809-1585.png)
 
-7. (Optional) **Add your server's IP to the whitelist** — this is required for features that call the DingTalk Open API (e.g. downloading images and files sent by users). Go to **"Security & Compliance → IP Whitelist"** in your app settings and add the public IP of the machine running QwenPaw. You can find your public IP by running `curl ifconfig.me` in a terminal. If the IP is not whitelisted, image and file downloads will fail with a `Forbidden.AccessDenied.IpNotInWhiteList` error.
+7. (Optional) **Add your server's IP to the whitelist** — this is required for features that call the DingTalk Open API (e.g. downloading images and files sent by users). Go to **"Security & Compliance → IP Whitelist"** in your app settings and add the public IP of the machine running MyClaw. You can find your public IP by running `curl ifconfig.me` in a terminal. If the IP is not whitelisted, image and file downloads will fail with a `Forbidden.AccessDenied.IpNotInWhiteList` error.
 
 ### Link the app
 
@@ -97,7 +97,7 @@ In your agent's `agent.json` (e.g., `~/.qwenpaw/workspaces/default/agent.json`),
 >
 > - Set `filter_tool_messages: true` if you want to hide tool execution details in the chat.
 > - AI Card mode: set `message_type` to `card`, then configure `card_template_id`; keep `card_template_key` consistent with your DingTalk template variable (default `content`).
-> - `robot_code` is recommended in group scenarios; if empty, QwenPaw falls back to `client_id`.
+> - `robot_code` is recommended in group scenarios; if empty, MyClaw falls back to `client_id`.
 
 Save the file; if the app is already running, the channel will reload. Otherwise run `qwenpaw app`.
 
@@ -143,7 +143,7 @@ The Feishu channel receives messages via **WebSocket long connection** (no publi
 
 3. Fill **App ID** and **App Secret** in `agent.json` (see "Fill agent.json" below) and save
 
-4. Run **`qwenpaw app`** to start QwenPaw
+4. Run **`qwenpaw app`** to start MyClaw
 
 5. Back in the Feishu console, enable **Bot** under **Add Features**
 
@@ -272,7 +272,7 @@ The JSON in step 6 grants the following permissions (app identity) for messaging
 | Get/upload image and file resources | im:resource                    | App     | -             |
 | **Read contact as app**             | **contact:user.base:readonly** | **App** | **See below** |
 
-> **User display name (recommended):** To show **user nicknames** in sessions and logs (e.g. "张三#1d1a" instead of "unknown#1d1a"), enable the contact read permission **Read contact as app** (`contact:user.base:readonly`). Without it, Feishu only returns identity fields (e.g. open_id) and not the user's name, so QwenPaw cannot resolve nicknames. After enabling, publish or update the app version so the permission takes effect.
+> **User display name (recommended):** To show **user nicknames** in sessions and logs (e.g. "张三#1d1a" instead of "unknown#1d1a"), enable the contact read permission **Read contact as app** (`contact:user.base:readonly`). Without it, Feishu only returns identity fields (e.g. open_id) and not the user's name, so MyClaw cannot resolve nicknames. After enabling, publish or update the app version so the permission takes effect.
 
 ### Add the bot to favorites
 
@@ -316,7 +316,7 @@ The app polls the local iMessage database for new messages and sends replies on 
    > cp ./bin/imsg /usr/local/bin/
    > ```
 
-3. For QwenPaw to read iMessage data, **Terminal** (or the app you use to run `qwenpaw app`) and **Messages** need **Full Disk Access** (System Settings → Privacy & Security → Full Disk Access).
+3. For MyClaw to read iMessage data, **Terminal** (or the app you use to run `qwenpaw app`) and **Messages** need **Full Disk Access** (System Settings → Privacy & Security → Full Disk Access).
 
 4. Set the iMessage database path. The default is `~/Library/Messages/chat.db`; use this unless you've moved the database. You can configure it in either of these ways:
 
@@ -450,7 +450,7 @@ Find `channels.discord` in your agent's `agent.json` (e.g., `~/.qwenpaw/workspac
 
 5. In **Developer settings**, get **AppID** and **AppSecret** (ClientSecret) and fill them into config (see below). Add your server’s **IP to the whitelist** — only whitelisted IPs can call the Open API outside sandbox.
 
-   > **Tip:** If you are using ModelScope Creative Space to deploy QwenPaw, the IP whitelist for QQ channel should be: `47.92.200.108`
+   > **Tip:** If you are using ModelScope Creative Space to deploy MyClaw, the IP whitelist for QQ channel should be: `47.92.200.108`
 
 ![1](https://img.alicdn.com/imgextra/i4/O1CN012UQWI21cnvBAUcz54_!!6000000003646-2-tps-4082-2126.png)
 
@@ -490,16 +490,16 @@ You can also fill them in the Console UI.
 
 ## OneBot v11 (NapCat / QQ full protocol)
 
-The **OneBot** channel connects QwenPaw to [NapCat](https://github.com/NapNeko/NapCatQQ), [go-cqhttp](https://github.com/Mrs4s/go-cqhttp), [Lagrange](https://github.com/LagrangeDev/Lagrange.Core), or any other [OneBot v11](https://github.com/botuniverse/onebot-11) compatible implementation via **reverse WebSocket**.
+The **OneBot** channel connects MyClaw to [NapCat](https://github.com/NapNeko/NapCatQQ), [go-cqhttp](https://github.com/Mrs4s/go-cqhttp), [Lagrange](https://github.com/LagrangeDev/Lagrange.Core), or any other [OneBot v11](https://github.com/botuniverse/onebot-11) compatible implementation via **reverse WebSocket**.
 
 Unlike the built-in QQ channel (which uses the official QQ Bot API with limited features), OneBot v11 provides **full QQ protocol** support: personal accounts, group messages without @mention, rich media, and more.
 
 ### How it works
 
-QwenPaw starts a WebSocket server; the OneBot implementation (e.g. NapCat) connects to it as a client:
+MyClaw starts a WebSocket server; the OneBot implementation (e.g. NapCat) connects to it as a client:
 
 ```
-NapCat  ──reverse WS──▶  QwenPaw (:6199/ws)
+NapCat  ──reverse WS──▶  MyClaw (:6199/ws)
 ```
 
 ### Setup NapCat
@@ -518,7 +518,7 @@ NapCat  ──reverse WS──▶  QwenPaw (:6199/ws)
 
 3. Go to **Network Config** → **New** → **WebSocket Client** (reverse WS):
    - URL: `ws://<qwenpaw_host>:6199/ws`
-   - Access Token: same as `access_token` in QwenPaw config (optional)
+   - Access Token: same as `access_token` in MyClaw config (optional)
 
 ### Fill agent.json
 
@@ -541,7 +541,7 @@ NapCat  ──reverse WS──▶  QwenPaw (:6199/ws)
 | `access_token`           | string | `""`      | Optional token for authentication (must match NapCat config)                                             |
 | `share_session_in_group` | bool   | `false`   | If `true`, all members in a group share one session; if `false`, each member gets an independent session |
 
-> **Docker Compose tip:** When running QwenPaw and NapCat in Docker Compose, set the NapCat reverse WS URL to `ws://qwenpaw:6199/ws` (using the service name).
+> **Docker Compose tip:** When running MyClaw and NapCat in Docker Compose, set the NapCat reverse WS URL to `ws://qwenpaw:6199/ws` (using the service name).
 
 **Multimodal support:**
 
@@ -553,7 +553,7 @@ NapCat  ──reverse WS──▶  QwenPaw (:6199/ws)
 | Video | 🚧      | ✓    |
 | File  | ✓       | ✓    |
 
-> **Note:** Audio and video are received at the channel level, but require QwenPaw's transcription provider (`transcription_provider_type`) to be configured for the LLM to process them. Without transcription, voice messages are shown as placeholders.
+> **Note:** Audio and video are received at the channel level, but require MyClaw's transcription provider (`transcription_provider_type`) to be configured for the LLM to process them. Without transcription, voice messages are shown as placeholders.
 
 ---
 
@@ -641,7 +641,7 @@ The WeChat iLink Bot channel lets you run an AI bot via a **personal WeChat acco
 
 ### QR code login (recommended via Console)
 
-1. Open the QwenPaw Web Console and go to **Settings → Channels → WeChat Personal (iLink)**.
+1. Open the MyClaw Web Console and go to **Settings → Channels → WeChat Personal (iLink)**.
 2. Click **Get Login QR Code** and wait for the QR code to appear.
 3. Scan the QR code with your WeChat mobile app and confirm authorization.
 4. Once confirmed, the Bot Token is automatically filled in the form — click **Save**.
@@ -812,7 +812,7 @@ JSON message format
 
 2. Fuzzy match subscription and automatic push
 
-   Subscribe to the wildcard topic `/server/+/up`. Messages will be automatically pushed to the corresponding topic based on the client's `client_id`. For example, after a client pushes a message to `/server/client_a/up`, QwenPaw will push the message to `/client/client_b/down` after processing.
+   Subscribe to the wildcard topic `/server/+/up`. Messages will be automatically pushed to the corresponding topic based on the client's `client_id`. For example, after a client pushes a message to `/server/client_a/up`, MyClaw will push the message to `/client/client_b/down` after processing.
 
    | subscribe_topic | publish_topic           |
    | --------------- | ----------------------- |
@@ -829,13 +829,13 @@ JSON message format
    }
    ```
 
-   Messages will be pushed to `client/client_b/down` based on the `redirect_client_id` attribute, enabling cross-topic push. In IoT scenarios, with QwenPaw as the core, autonomous message pushing between multiple devices can be achieved according to individual requirements.
+   Messages will be pushed to `client/client_b/down` based on the `redirect_client_id` attribute, enabling cross-topic push. In IoT scenarios, with MyClaw as the core, autonomous message pushing between multiple devices can be achieved according to individual requirements.
 
 ---
 
 ## Matrix
 
-The Matrix channel connects QwenPaw to any Matrix homeserver using the [matrix-nio](https://github.com/poljar/matrix-nio) library. It supports text messaging in both direct messages and group rooms.
+The Matrix channel connects MyClaw to any Matrix homeserver using the [matrix-nio](https://github.com/poljar/matrix-nio) library. It supports text messaging in both direct messages and group rooms.
 
 ### Create a Matrix bot account and get an access token
 
@@ -891,7 +891,7 @@ Find `channels.matrix` in your agent's `agent.json` (e.g., `~/.qwenpaw/workspace
 | `user_id`      | string | `""` (required) | Bot User ID (e.g., `@mybot:matrix.org`)            |
 | `access_token` | string | `""` (required) | Bot access token (starts with `syt_`)              |
 
-Save the file; the channel will reload automatically if QwenPaw is already running.
+Save the file; the channel will reload automatically if MyClaw is already running.
 
 ### Chat with the bot
 
@@ -907,7 +907,7 @@ Invite the bot to a room or send it a direct message from any Matrix client (e.g
 
 ## XiaoYi
 
-The XiaoYi channel connects QwenPaw via **A2A (Agent-to-Agent) protocol** over WebSocket to Huawei's AI assistant platform.
+The XiaoYi channel connects MyClaw via **A2A (Agent-to-Agent) protocol** over WebSocket to Huawei's AI assistant platform.
 
 ### Get credentials
 
@@ -937,12 +937,12 @@ The XiaoYi channel connects QwenPaw via **A2A (Agent-to-Agent) protocol** over W
 
 ## Voice
 
-The Voice channel enables phone call interactions with QwenPaw via Twilio ConversationRelay, supporting Speech-to-Text (STT) and Text-to-Speech (TTS) for voice-based conversations.
+The Voice channel enables phone call interactions with MyClaw via Twilio ConversationRelay, supporting Speech-to-Text (STT) and Text-to-Speech (TTS) for voice-based conversations.
 
 ### Prerequisites
 
 1. **Twilio Account**: Register at [Twilio](https://www.twilio.com/) and obtain credentials
-2. **Cloudflare Tunnel** (or similar): Expose your local QwenPaw service to the public internet for Twilio webhook callbacks
+2. **Cloudflare Tunnel** (or similar): Expose your local MyClaw service to the public internet for Twilio webhook callbacks
 
 ### Create Twilio account and get credentials
 
@@ -957,7 +957,7 @@ The Voice channel enables phone call interactions with QwenPaw via Twilio Conver
 
 ### Configure Cloudflare Tunnel
 
-Twilio needs to reach QwenPaw's webhook endpoint via the public internet, so you need to expose your local service.
+Twilio needs to reach MyClaw's webhook endpoint via the public internet, so you need to expose your local service.
 
 1. Install Cloudflare Tunnel client:
 
@@ -1013,7 +1013,7 @@ Advanced options:
       "tts_voice": "en-US-Journey-D",
       "stt_provider": "deepgram",
       "language": "en-US",
-      "welcome_greeting": "Hi! This is QwenPaw. How can I help you?"
+      "welcome_greeting": "Hi! This is MyClaw. How can I help you?"
     }
   }
 }
@@ -1033,11 +1033,11 @@ Configure your phone number's webhook in the Twilio Console:
 
 ### Usage
 
-After configuration, simply call your Twilio phone number to have a voice conversation with QwenPaw:
+After configuration, simply call your Twilio phone number to have a voice conversation with MyClaw:
 
 1. Dial the phone number
 2. After hearing the welcome greeting, start speaking
-3. QwenPaw converts speech to text and processes it through the Agent
+3. MyClaw converts speech to text and processes it through the Agent
 4. The Agent's response is converted to speech and played back to you
 
 **Voice channel-specific fields:**
@@ -1052,7 +1052,7 @@ After configuration, simply call your Twilio phone number to have a voice conver
 | `tts_voice`          | string | `"en-US-Journey-D"`                          | TTS voice model                              |
 | `stt_provider`       | string | `"deepgram"`                                 | Speech-to-text provider                      |
 | `language`           | string | `"en-US"`                                    | Language code                                |
-| `welcome_greeting`   | string | `"Hi! This is QwenPaw. How can I help you?"` | Welcome message when call connects           |
+| `welcome_greeting`   | string | `"Hi! This is MyClaw. How can I help you?"` | Welcome message when call connects           |
 
 > **Note**: The Voice channel requires a continuous network connection and a running tunnel solution. For production use, consider stable tunneling options (like Cloudflare Tunnel, ngrok paid plans, etc.).
 
@@ -1060,7 +1060,7 @@ After configuration, simply call your Twilio phone number to have a voice conver
 
 ## SIP
 
-The SIP channel enables voice conversations with QwenPaw via standard SIP phones and softphones (e.g., Linphone, MicroSIP, IP desk phones). It works entirely on your local network or private infrastructure — no cloud account or public URL required.
+The SIP channel enables voice conversations with MyClaw via standard SIP phones and softphones (e.g., Linphone, MicroSIP, IP desk phones). It works entirely on your local network or private infrastructure — no cloud account or public URL required.
 
 Two backend modes are available:
 
@@ -1071,7 +1071,7 @@ Two backend modes are available:
 
 ### Quick try: Dev mode (3 minutes, zero external infra)
 
-The fastest way to try SIP. QwenPaw starts a built-in SIP registrar automatically — no Asterisk, FreeSWITCH, or any external server needed.
+The fastest way to try SIP. MyClaw starts a built-in SIP registrar automatically — no Asterisk, FreeSWITCH, or any external server needed.
 
 1. Install:
 
@@ -1079,21 +1079,21 @@ The fastest way to try SIP. QwenPaw starts a built-in SIP registrar automaticall
 pip install "qwenpaw[sip]"
 ```
 
-2. Start QwenPaw and configure in Console:
+2. Start MyClaw and configure in Console:
 
 ```bash
 qwenpaw init --defaults
 qwenpaw app
 ```
 
-Open **http://127.0.0.1:8088/** → **Settings → Models**: configure a model provider and API key. Then go to **Control → Channels → SIP**: enable it, fill in your DashScope API Key, and click **Save**. All other fields can be left at their defaults — when `sip_server` is empty, QwenPaw automatically starts a built-in registrar, uses `aliyun` for STT/TTS, and picks a default voice.
+Open **http://127.0.0.1:8088/** → **Settings → Models**: configure a model provider and API key. Then go to **Control → Channels → SIP**: enable it, fill in your DashScope API Key, and click **Save**. All other fields can be left at their defaults — when `sip_server` is empty, MyClaw automatically starts a built-in registrar, uses `aliyun` for STT/TTS, and picks a default voice.
 
-QwenPaw will restart the SIP channel automatically. You'll see in the terminal:
+MyClaw will restart the SIP channel automatically. You'll see in the terminal:
 
 ```
 [SIP] Built-in SIP registrar started on 0.0.0.0:5060
 [SIP] Quickstart: register your softphone to <Your-IP>:5060
-[SIP] Dial 'sip:agent@<Your-IP>:5060' to talk with QwenPaw!
+[SIP] Dial 'sip:agent@<Your-IP>:5060' to talk with MyClaw!
 ```
 
 3. Open [Linphone](https://www.linphone.org/linphone) (or any SIP softphone) and configure:
@@ -1105,7 +1105,7 @@ QwenPaw will restart the SIP channel automatically. You'll see in the terminal:
    - No password needed — the built-in registrar accepts all registrations
    - Dial: `sip:agent@127.0.0.1:5060`
 
-   You should hear the welcome greeting, then speak — QwenPaw will reply!
+   You should hear the welcome greeting, then speak — MyClaw will reply!
 
    **Alternative: pjsua (CLI, uses system microphone/speaker)**
 
@@ -1128,7 +1128,7 @@ You can test the full LiveKit audio pipeline directly from your browser using We
 
 1. Sign up for [LiveKit Cloud](https://cloud.livekit.io/) (free tier available) and create a project. Note your project URL (from **Settings → Project**), and API Key / API Secret (from **Settings → API keys**).
 
-2. Install, start QwenPaw, and configure in Console:
+2. Install, start MyClaw, and configure in Console:
 
 ```bash
 pip install "qwenpaw[sip,sip-livekit]"
@@ -1164,7 +1164,7 @@ You'll see in the terminal: `Connected to room: sip-inbound, waiting...`
    - Open [meet.livekit.io](https://meet.livekit.io/) → click **"Custom"** at the bottom
    - Enter your LiveKit Cloud URL (e.g., `wss://<your-project>.livekit.cloud`)
    - Paste the generated token and click **Connect**
-   - Allow microphone access, then speak — QwenPaw responds!
+   - Allow microphone access, then speak — MyClaw responds!
 
 > **Note**: This browser-based test exercises the exact same audio pipeline (streaming STT, 24kHz TTS, barge-in) as a real SIP phone call. It's a fully valid test of LiveKit mode.
 
@@ -1174,7 +1174,7 @@ For production use with real phone numbers and carrier-grade reliability, use on
 
 **Dev mode with external SIP server:**
 
-Use Asterisk, FreeSWITCH, or any SIP PBX as the registrar. Set `sip_server` to your PBX address. QwenPaw registers as a SIP extension and receives calls routed by the PBX.
+Use Asterisk, FreeSWITCH, or any SIP PBX as the registrar. Set `sip_server` to your PBX address. MyClaw registers as a SIP extension and receives calls routed by the PBX.
 
 **LiveKit mode with SIP Trunk:**
 
@@ -1207,17 +1207,17 @@ Go to **Control → Channels**, click **SIP**, select **Dev (pyVoIP)** mode. Lea
       "tts_provider": "aliyun",
       "tts_voice": "longxiaochun",
       "language": "zh-CN",
-      "welcome_greeting": "你好，我是QwenPaw"
+      "welcome_greeting": "你好，我是MyClaw"
     }
   }
 }
 ```
 
-When `sip_server` is empty, QwenPaw starts a built-in SIP registrar on port 5060 and the agent registers to it automatically. When `sip_server` is set (e.g., `"192.168.1.100:5060"`), QwenPaw registers to that external server instead.
+When `sip_server` is empty, MyClaw starts a built-in SIP registrar on port 5060 and the agent registers to it automatically. When `sip_server` is set (e.g., `"192.168.1.100:5060"`), MyClaw registers to that external server instead.
 
 ### LiveKit mode configuration
 
-Production mode delegates SIP/RTP to LiveKit SIP Server — a Go binary that handles NAT traversal, jitter buffering, and codec negotiation. QwenPaw joins LiveKit rooms as an AI participant.
+Production mode delegates SIP/RTP to LiveKit SIP Server — a Go binary that handles NAT traversal, jitter buffering, and codec negotiation. MyClaw joins LiveKit rooms as an AI participant.
 
 1. Install extras:
 
@@ -1240,7 +1240,7 @@ pip install "qwenpaw[sip,sip-livekit]"
       "tts_provider": "aliyun",
       "tts_voice": "longxiaochun",
       "language": "zh-CN",
-      "welcome_greeting": "你好，我是QwenPaw"
+      "welcome_greeting": "你好，我是MyClaw"
     }
   }
 }
@@ -1248,14 +1248,14 @@ pip install "qwenpaw[sip,sip-livekit]"
 
 > **`livekit_url`**: Use `wss://<project>.livekit.cloud` for LiveKit Cloud, or `ws://<host>:<port>` for a self-hosted LiveKit Server.
 
-3. Start QwenPaw. For SIP phone calls, also set up LiveKit infrastructure with a SIP Trunk and Dispatch Rule (see [LiveKit SIP docs](https://docs.livekit.io/sip/)). For browser-based testing, see the [Quick try](#quick-try-livekit-mode-via-browser-3-minutes-no-sip-phone-needed) section above.
+3. Start MyClaw. For SIP phone calls, also set up LiveKit infrastructure with a SIP Trunk and Dispatch Rule (see [LiveKit SIP docs](https://docs.livekit.io/sip/)). For browser-based testing, see the [Quick try](#quick-try-livekit-mode-via-browser-3-minutes-no-sip-phone-needed) section above.
 
 ### Usage
 
 After configuration, start a call from your SIP phone or browser:
 
 1. The call connects and you hear the welcome greeting
-2. Start speaking — QwenPaw converts speech to text via streaming STT
+2. Start speaking — MyClaw converts speech to text via streaming STT
 3. The Agent processes your message and generates a reply
 4. The reply is converted to speech via TTS and played back to you
 5. Continue the conversation naturally — multi-turn is fully supported
@@ -1281,7 +1281,7 @@ After configuration, start a call from your SIP phone or browser:
 | `tts_voice`          | string | `"longxiaochun"`                             | TTS voice model                                                         |
 | `stt_provider`       | string | `"aliyun"`                                   | STT provider (currently supports `aliyun`)                              |
 | `language`           | string | `"zh-CN"`                                    | Language code                                                           |
-| `welcome_greeting`   | string | `"Hi! This is QwenPaw. How can I help you?"` | Welcome message when call connects                                      |
+| `welcome_greeting`   | string | `"Hi! This is MyClaw. How can I help you?"` | Welcome message when call connects                                      |
 | `call_timeout`       | float  | `30.0`                                       | Outbound call timeout in seconds                                        |
 
 ---
@@ -1519,9 +1519,9 @@ def build_agent_request_from_native(self, native_payload):
 
 ### HTTP route registration
 
-For channels that require webhook callbacks (e.g., WeChat, Slack, LINE), you can register custom HTTP routes by exporting a `register_app_routes` callable in your module — no changes to QwenPaw's core source required.
+For channels that require webhook callbacks (e.g., WeChat, Slack, LINE), you can register custom HTTP routes by exporting a `register_app_routes` callable in your module — no changes to MyClaw's core source required.
 
-At startup, QwenPaw scans modules in `custom_channels/` for a `register_app_routes` export. If found, it is called with the FastAPI `app` instance, allowing the channel to register any routes it needs.
+At startup, MyClaw scans modules in `custom_channels/` for a `register_app_routes` export. If found, it is called with the FastAPI `app` instance, allowing the channel to register any routes it needs.
 
 **Route prefix behavior**:
 

@@ -95,11 +95,31 @@ export default function LoginPage() {
         }}
       >
         <div style={{ textAlign: "center", marginBottom: 32 }}>
-          <img
-            src={isDark ? "/logo-dark.svg" : "/logo-light.svg"}
-            alt="QwenPaw"
-            style={{ height: 48, marginBottom: 12 }}
-          />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+              marginBottom: 12,
+            }}
+          >
+            <img
+              src={isDark ? "/logo-mark-dark.svg" : "/logo-mark-light.svg"}
+              alt=""
+              aria-hidden
+              style={{ height: 40, width: "auto" }}
+            />
+            <span
+              style={{
+                fontSize: 26,
+                fontWeight: 600,
+                color: isDark ? "rgba(255,255,255,0.92)" : "#1a1716",
+              }}
+            >
+              {t("header.brandName")}
+            </span>
+          </div>
           <h2 style={{ margin: 0, fontWeight: 600, fontSize: 20 }}>
             {isRegister ? t("login.registerTitle") : t("login.title")}
           </h2>

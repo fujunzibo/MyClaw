@@ -1,12 +1,12 @@
 /**
- * QwenPaw branding logo (logo.png). Favicon uses qwenpaw-symbol.svg.
+ * MyClaw wordmark: use projectName in the nav; this is the paw mark only.
  */
 interface CatPawIconProps {
   size: number;
   className?: string;
 }
 
-const LOGO_SRC = "/logo.png";
+const LOGO_SRC = "/brand-mark.svg";
 
 export function CatPawIcon({ size, className = "" }: CatPawIconProps) {
   return (

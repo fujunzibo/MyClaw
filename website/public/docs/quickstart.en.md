@@ -1,6 +1,6 @@
 # Quick start
 
-This section describes multiple ways to install QwenPaw:
+This section describes multiple ways to install MyClaw:
 
 | Installation Method   | Best For                                      | Advantages                                                  | Prerequisites         |
 | --------------------- | --------------------------------------------- | ----------------------------------------------------------- | --------------------- |
@@ -62,7 +62,7 @@ qwenpaw app
 ```
 
 The server listens on `127.0.0.1:8088` by default. If you've already configured
-channels, QwenPaw will reply there. Otherwise, you can complete this section
+channels, MyClaw will reply there. Otherwise, you can complete this section
 first and then configure channels.
 
 ---
@@ -93,7 +93,7 @@ curl -fsSL https://qwenpaw.agentscope.io/install.bat -o install.bat && install.b
 irm https://qwenpaw.agentscope.io/install.ps1 | iex
 ```
 
-Then open a new terminal (the installer adds QwenPaw to your PATH automatically).
+Then open a new terminal (the installer adds MyClaw to your PATH automatically).
 
 > **⚠️ Special Notice for Windows Enterprise LTSC Users**
 >
@@ -104,9 +104,9 @@ Then open a new terminal (the installer adds QwenPaw to your PATH automatically)
 >    The script completes file installation. Due to **Constrained Language Mode**, it cannot automatically update environment variables. Manually configure as follows:
 >
 >    - **Locate the installation directory**:
->      - Check if `uv` is available: Enter `uv --version` in CMD. If a version number appears, **only configure the QwenPaw path**. If you receive `'uv' is not recognized as an internal or external command, operable program or batch file,` configure both paths.
+>      - Check if `uv` is available: Enter `uv --version` in CMD. If a version number appears, **only configure the MyClaw path**. If you receive `'uv' is not recognized as an internal or external command, operable program or batch file,` configure both paths.
 >      - uv path (choose one based on installation location; fill if `uv` is unavailable): Typically `%USERPROFILE%\.local\bin`, `%USERPROFILE%\AppData\Local\uv`, or the `Scripts` folder within your Python installation directory
->      - QwenPaw path: Typically `%USERPROFILE%\.qwenpaw\bin`.
+>      - MyClaw path: Typically `%USERPROFILE%\.qwenpaw\bin`.
 >    - **Manually add to the system's Path environment variable**:
 >      - Press `Win + R`, type `sysdm.cpl` and press Enter to open System Properties.
 >      - Click "Advanced" → "Environment Variables".
@@ -119,8 +119,8 @@ Then open a new terminal (the installer adds QwenPaw to your PATH automatically)
 >
 > - **Manually install uv**: Refer to [GitHub Release](https://github.com/astral-sh/uv/releases) to download `uv.exe` and place it in `%USERPROFILE%\.local\bin` or `%USERPROFILE%\AppData\Local\uv`; or ensure Python is installed and run `python -m pip install -U uv`.
 > - **Configure `uv` environment variables**: Add the `uv` directory and `%USERPROFILE%\.qwenpaw\bin` to your system's `Path` variable.
-> - **Re-run the installation**: Open a new terminal and execute the installation script again to complete the `QwenPaw` installation.
-> - **Configure the `QwenPaw` environment variable**: Add `%USERPROFILE%\.qwenpaw\bin` to your system's `Path` variable.
+> - **Re-run the installation**: Open a new terminal and execute the installation script again to complete the `MyClaw` installation.
+> - **Configure the `MyClaw` environment variable**: Add `%USERPROFILE%\.qwenpaw\bin` to your system's `Path` variable.
 
 You can also specify options:
 
@@ -172,7 +172,7 @@ qwenpaw app
 ```
 
 The server listens on `127.0.0.1:8088` by default. If you've already configured
-channels, QwenPaw will reply there. Otherwise, you can complete this section
+channels, MyClaw will reply there. Otherwise, you can complete this section
 first and then configure channels.
 
 ---
@@ -219,31 +219,31 @@ and API keys are stored in the `qwenpaw-secrets` volume; backup archives are sto
 
 ## Option 4: Deploy to Alibaba Cloud ECS
 
-To deploy QwenPaw on Alibaba Cloud, use the ECS one-click deployment:
+To deploy MyClaw on Alibaba Cloud, use the ECS one-click deployment:
 
-1. Open the [QwenPaw Alibaba Cloud ECS deployment link](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-1ed84201799f40879884) and fill in the deployment parameters as prompted;
+1. Open the [MyClaw Alibaba Cloud ECS deployment link](https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-1ed84201799f40879884) and fill in the deployment parameters as prompted;
 2. After parameter configuration, confirm the cost and create the instance. Once deployment is complete, you can get the access URL and use the service.
 
-For detailed steps and instructions, see [Alibaba Cloud Developer Community: Deploy your AI assistant with QwenPaw in 3 minutes](https://developer.aliyun.com/article/1713682).
+For detailed steps and instructions, see [Alibaba Cloud Developer Community: Deploy your AI assistant with MyClaw in 3 minutes](https://developer.aliyun.com/article/1713682).
 
 ---
 
 ## Option 5: ModelScope Studio one-click setup (no installation)
 
-If you don't want to install Python locally, you can deploy QwenPaw to the cloud
+If you don't want to install Python locally, you can deploy MyClaw to the cloud
 through ModelScope Studio:
 
 1. First go to [ModelScope](https://modelscope.cn/register?back=%2Fhome) to register and log in;
-2. Open [QwenPaw Studio](https://modelscope.cn/studios/fork?target=AgentScope/QwenPaw) and complete the one-click setup.
+2. Open [MyClaw Studio](https://modelscope.cn/studios/fork?target=AgentScope/QwenPaw) and complete the one-click setup.
 
-**Important**: Set your Studio to **non-public**, or others may control your QwenPaw.
+**Important**: Set your Studio to **non-public**, or others may control your MyClaw.
 
 ---
 
 ## Option 6: Desktop application
 
 If you're not comfortable with command-line tools, you can download and use
-QwenPaw's desktop application without manually configuring Python environments
+MyClaw's desktop application without manually configuring Python environments
 or running commands.
 
 ### Features
@@ -257,13 +257,13 @@ or running commands.
 1. **Download the installer**
    Go to [GitHub Releases](https://github.com/agentscope-ai/QwenPaw/releases) to download the version for your system:
 
-   - Windows: `QwenPaw-Setup-<version>.exe`
-   - macOS: `QwenPaw-<version>-macOS.zip`
+   - Windows: `MyClaw-Setup-<version>.exe`
+   - macOS: `MyClaw-<version>-macOS.zip`
 
 2. **Install and launch**
 
    - **Windows**: Double-click the `.exe` file to install following the wizard, then double-click the desktop shortcut to launch
-   - **macOS**: Extract the `.zip` to get `QwenPaw.app`, first time requires right-click and select "Open" to bypass system security restrictions
+   - **macOS**: Extract the `.zip` to get `MyClaw.app`, first time requires right-click and select "Open" to bypass system security restrictions
 
 3. **First launch note**
    The first launch may take 10-60 seconds (depending on your system configuration).
@@ -305,7 +305,7 @@ Use the same `session_id` for multi-turn conversations.
 
 #### ✅ 1. Configure models (required)
 
-QwenPaw needs a large language model to work. You can choose either option:
+MyClaw needs a large language model to work. You can choose either option:
 
 **Option A: Use cloud models (requires API Key)**
 
@@ -322,14 +322,14 @@ See [Models - Configure cloud providers](./models).
 
 1. Install local model backend:
 
-- QwenPaw Local (llama.cpp): download `llama.cpp` inside QwenPaw Local provider settings, see [Models - Local providers Configuration](./models) for details.
+- MyClaw Local (llama.cpp): download `llama.cpp` inside MyClaw Local provider settings, see [Models - Local providers Configuration](./models) for details.
 - Ollama: install Ollama from [Ollama website](https://ollama.com/download) and run the Ollama service.
 - LM Studio: install LM Studio from [LM Studio website](https://lmstudio.ai/download) and run the LM Studio service.
 
 2. Download models:
 
-- For QwenPaw Local (llama.cpp), you can download models directly from the provider settings in the Console, or manually place GGUF model files in the local models directory (default `~/.qwenpaw/local_models/models/<org>/<model>`, for example: `~/.qwenpaw/local_models/models/Qwen/Qwen3-0.6B-GGUF`).
-- For Ollama and LM Studio, you need to add models in their respective services first, then QwenPaw can automatically fetch the model list and connect to them.
+- For MyClaw Local (llama.cpp), you can download models directly from the provider settings in the Console, or manually place GGUF model files in the local models directory (default `~/.qwenpaw/local_models/models/<org>/<model>`, for example: `~/.qwenpaw/local_models/models/Qwen/Qwen3-0.6B-GGUF`).
+- For Ollama and LM Studio, you need to add models in their respective services first, then MyClaw can automatically fetch the model list and connect to them.
 
 3. Select the local provider and model in the Console
 
@@ -338,7 +338,7 @@ After configuring the local model, you can select it in the Console's **Default 
 #### 🎯 2. Test chat in Console
 
 After model configuration is complete, send a message in the Console's **Chat**
-page to test functionality and confirm QwenPaw can reply normally.
+page to test functionality and confirm MyClaw can reply normally.
 
 ---
 
@@ -348,16 +348,16 @@ After configuring models and testing successfully, you can extend as needed:
 
 #### 📱 Connect messaging channels
 
-Chat with QwenPaw in DingTalk, Feishu, QQ, Discord, iMessage, and other apps:
+Chat with MyClaw in DingTalk, Feishu, QQ, Discord, iMessage, and other apps:
 
 1. In the Console, go to **Control → Channels**
 2. Select the channel to connect
 3. Follow the [Channels](./channels) documentation to obtain credentials and fill them in
-4. After saving, you can send messages to QwenPaw in the corresponding app
+4. After saving, you can send messages to MyClaw in the corresponding app
 
 #### 🔧 Enable and extend skills
 
-Give QwenPaw more capabilities (PDF processing, Office documents, news summaries, etc.):
+Give MyClaw more capabilities (PDF processing, Office documents, news summaries, etc.):
 
 - In the Console, go to **Agent → Skill Pool** or **Agent → Skills**
 - Import built-in skills, import from Skill Hub, or create custom skills
@@ -373,7 +373,7 @@ Extend external tool capabilities through MCP (Model Context Protocol):
 
 #### ⏰ Set up scheduled tasks and heartbeat
 
-Let QwenPaw execute tasks automatically:
+Let MyClaw execute tasks automatically:
 
 - **Scheduled tasks**: Create in Console **Control → Scheduled tasks**, or use `qwenpaw cron` command in [CLI](./cli)
 - **Heartbeat**: Configure scheduled check-ins or digests, see [Heartbeat](./heartbeat)

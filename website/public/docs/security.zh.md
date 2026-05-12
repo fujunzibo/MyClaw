@@ -1,10 +1,10 @@
 # 安全
 
-QwenPaw 内置了安全功能，保护你的 Agent 在运行过程中产生的不安全行为和不安全技能的影响。这些功能在控制台 **设置 → 安全** 中配置，也可以通过 `config.json` 进行设置。
+MyClaw 内置了安全功能，保护你的 Agent 在运行过程中产生的不安全行为和不安全技能的影响。这些功能在控制台 **设置 → 安全** 中配置，也可以通过 `config.json` 进行设置。
 
 ## 概述
 
-QwenPaw 的安全系统由三个核心安全层组成:
+MyClaw 的安全系统由三个核心安全层组成:
 
 ```
 安全架构:
@@ -584,13 +584,13 @@ scanner = SkillScanner(policy=policy)
 
 ## Web 登录认证
 
-QwenPaw 支持可选的 Web 登录认证,保护控制台免受未授权访问。认证**默认关闭**,需要通过 `QWENPAW_AUTH_ENABLED` 环境变量显式启用。
+MyClaw 支持可选的 Web 登录认证,保护控制台免受未授权访问。认证**默认关闭**,需要通过 `QWENPAW_AUTH_ENABLED` 环境变量显式启用。
 
 ![login](https://img.alicdn.com/imgextra/i4/O1CN01VdXCuP1tWpsl0TlQ5_!!6000000005910-2-tps-3822-2070.png)
 
 ### 工作原理
 
-1. **启用认证** — 设置 `QWENPAW_AUTH_ENABLED=true` 并启动 QwenPaw
+1. **启用认证** — 设置 `QWENPAW_AUTH_ENABLED=true` 并启动 MyClaw
 2. **注册流程**:
    - 首次访问时,控制台显示**注册页面**
    - 创建唯一的管理员账户(用户名 + 密码)
@@ -601,7 +601,7 @@ QwenPaw 支持可选的 Web 登录认证,保护控制台免受未授权访问。
    - 令牌存储在浏览器 localStorage,自动附加到所有 API 请求
 4. **自动注册**(可选):
    - 设置 `QWENPAW_AUTH_USERNAME` 和 `QWENPAW_AUTH_PASSWORD` 环境变量
-   - QwenPaw 启动时自动创建管理员账户,跳过网页注册
+   - MyClaw 启动时自动创建管理员账户,跳过网页注册
    - 适用于 Docker、Kubernetes、服务器管理面板等自动化部署场景
 5. **本地免认证** — 来自本地(`127.0.0.1` / `::1`)的请求自动跳过认证,CLI 命令(`qwenpaw app`、`qwenpaw chat` 等)无需令牌即可正常工作
 
@@ -739,7 +739,7 @@ QWENPAW_AUTH_PASSWORD=mypassword
 
 ### 关闭认证
 
-移除或取消环境变量并重启 QwenPaw：
+移除或取消环境变量并重启 MyClaw：
 
 ```bash
 # Linux / macOS
@@ -777,7 +777,7 @@ docker exec -it <容器名> qwenpaw auth reset-password
 ```bash
 # 删除认证文件
 rm ~/.qwenpaw.secret/auth.json  # 或 $WORKING_DIR.secret/auth.json
-# 重启 QwenPaw,下次访问时重新注册
+# 重启 MyClaw,下次访问时重新注册
 qwenpaw app
 ```
 

@@ -1,10 +1,10 @@
 # Security
 
-QwenPaw includes built-in security features to protect your agent from malicious inputs and unsafe skills. These are configured in the Console under **Settings → Security**, or via `config.json`.
+MyClaw includes built-in security features to protect your agent from malicious inputs and unsafe skills. These are configured in the Console under **Settings → Security**, or via `config.json`.
 
 ## Overview
 
-QwenPaw's security system consists of three core security layers:
+MyClaw's security system consists of three core security layers:
 
 ```
 Security Architecture:
@@ -589,13 +589,13 @@ Here's a complete `config.json` with all security features configured:
 
 ## Web Authentication
 
-QwenPaw supports optional web login authentication to protect the Console from unauthorized access. Authentication is **disabled by default** and must be explicitly enabled via the `QWENPAW_AUTH_ENABLED` environment variable.
+MyClaw supports optional web login authentication to protect the Console from unauthorized access. Authentication is **disabled by default** and must be explicitly enabled via the `QWENPAW_AUTH_ENABLED` environment variable.
 
 ![login](https://img.alicdn.com/imgextra/i1/O1CN01wh3Sv01SxPEXpb6Wj_!!6000000002313-2-tps-3822-2070.png)
 
 ### How it works
 
-1. **Enable authentication** — Set `QWENPAW_AUTH_ENABLED=true` and start QwenPaw
+1. **Enable authentication** — Set `QWENPAW_AUTH_ENABLED=true` and start MyClaw
 2. **Registration flow**:
    - On first visit, the Console shows a **registration page**
    - Create the single admin account (username + password)
@@ -606,7 +606,7 @@ QwenPaw supports optional web login authentication to protect the Console from u
    - Token is stored in browser localStorage and automatically attached to all API requests
 4. **Auto-registration** (optional):
    - Set `QWENPAW_AUTH_USERNAME` and `QWENPAW_AUTH_PASSWORD` environment variables
-   - QwenPaw automatically creates the admin account on startup, skipping web registration
+   - MyClaw automatically creates the admin account on startup, skipping web registration
    - Useful for Docker, Kubernetes, server management panels, and other automated deployments
 5. **Localhost bypass** — Requests from localhost (`127.0.0.1` / `::1`) automatically skip authentication; CLI commands (`qwenpaw app`, `qwenpaw chat`, etc.) work without a token
 
@@ -744,7 +744,7 @@ Then pass it to Docker with `--env-file .env`, or source it in your shell before
 
 ### Disable authentication
 
-Remove or unset the environment variable and restart QwenPaw:
+Remove or unset the environment variable and restart MyClaw:
 
 ```bash
 # Linux / macOS
@@ -782,7 +782,7 @@ To completely reset the authentication system:
 ```bash
 # Delete the auth file
 rm ~/.qwenpaw.secret/auth.json  # or $WORKING_DIR.secret/auth.json
-# Restart QwenPaw; re-register on next visit
+# Restart MyClaw; re-register on next visit
 qwenpaw app
 ```
 

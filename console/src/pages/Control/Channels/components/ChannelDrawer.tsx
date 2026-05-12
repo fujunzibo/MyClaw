@@ -18,6 +18,10 @@ import { useChannelQrcode } from "./useChannelQrcode";
 import styles from "../index.module.less";
 import { useTheme } from "../../../../contexts/ThemeContext";
 import { useAgentStore } from "../../../../stores/agentStore";
+import { PUBLIC_DOCS_SITE_BASE } from "../../../../layouts/constants";
+
+const channelsDocUrl = (lang: "en" | "zh", hash: string) =>
+  `${PUBLIC_DOCS_SITE_BASE}/docs/channels/?lang=${lang}#${hash}`;
 
 const CHANNELS_WITH_ACCESS_CONTROL: ChannelKey[] = [
   "telegram",
@@ -32,49 +36,45 @@ const CHANNELS_WITH_ACCESS_CONTROL: ChannelKey[] = [
   "onebot",
 ];
 
-// Doc EN URLs per channel (anchors on https://qwenpaw.agentscope.io/docs/channels)
+// Doc EN URLs per channel (anchors on {PUBLIC_DOCS_SITE_BASE}/docs/channels)
 const CHANNEL_DOC_EN_URLS: Partial<Record<ChannelKey, string>> = {
-  dingtalk:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=en#DingTalk-recommended",
-  feishu: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#Feishu-Lark",
-  imessage:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=en#iMessage-macOS-only",
-  discord: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#Discord",
-  qq: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#QQ",
-  telegram: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#Telegram",
-  mqtt: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#MQTT",
-  mattermost: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#Mattermost",
-  matrix: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#Matrix",
-  sip: "https://qwenpaw.agentscope.io/docs/channels/?lang=en#SIP",
-  wecom:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=en#WeCom-WeChat-Work",
-  weixin:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=en#WeChat-Personal-iLink",
+  dingtalk: channelsDocUrl("en", "DingTalk-recommended"),
+  feishu: channelsDocUrl("en", "Feishu-Lark"),
+  imessage: channelsDocUrl("en", "iMessage-macOS-only"),
+  discord: channelsDocUrl("en", "Discord"),
+  qq: channelsDocUrl("en", "QQ"),
+  telegram: channelsDocUrl("en", "Telegram"),
+  mqtt: channelsDocUrl("en", "MQTT"),
+  mattermost: channelsDocUrl("en", "Mattermost"),
+  matrix: channelsDocUrl("en", "Matrix"),
+  sip: channelsDocUrl("en", "SIP"),
+  wecom: channelsDocUrl("en", "WeCom-WeChat-Work"),
+  weixin: channelsDocUrl("en", "WeChat-Personal-iLink"),
   xiaoyi:
     "https://developer.huawei.com/consumer/cn/doc/service/openclaw-0000002518410344",
-  onebot:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=en#OneBot-v11-NapCat--QQ-full-protocol",
+  onebot: channelsDocUrl(
+    "en",
+    "OneBot-v11-NapCat--QQ-full-protocol",
+  ),
 };
 
-// Doc ZH URLs per channel (anchors on https://qwenpaw.agentscope.io/docs/channels)
+// Doc ZH URLs per channel
 const CHANNEL_DOC_ZH_URLS: Partial<Record<ChannelKey, string>> = {
-  dingtalk: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#钉钉推荐",
-  feishu: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#飞书",
-  imessage:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#iMessage仅-macOS",
-  discord: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#Discord",
-  qq: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#QQ",
-  telegram: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#Telegram",
-  mqtt: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#MQTT",
-  mattermost: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#Mattermost",
-  matrix: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#Matrix",
-  sip: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#SIP",
-  wecom: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#企业微信",
-  weixin: "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#微信个人iLink",
+  dingtalk: channelsDocUrl("zh", "钉钉推荐"),
+  feishu: channelsDocUrl("zh", "飞书"),
+  imessage: channelsDocUrl("zh", "iMessage仅-macOS"),
+  discord: channelsDocUrl("zh", "Discord"),
+  qq: channelsDocUrl("zh", "QQ"),
+  telegram: channelsDocUrl("zh", "Telegram"),
+  mqtt: channelsDocUrl("zh", "MQTT"),
+  mattermost: channelsDocUrl("zh", "Mattermost"),
+  matrix: channelsDocUrl("zh", "Matrix"),
+  sip: channelsDocUrl("zh", "SIP"),
+  wecom: channelsDocUrl("zh", "企业微信"),
+  weixin: channelsDocUrl("zh", "微信个人iLink"),
   xiaoyi:
     "https://developer.huawei.com/consumer/cn/doc/service/openclaw-0000002518410344",
-  onebot:
-    "https://qwenpaw.agentscope.io/docs/channels/?lang=zh#OneBot-v11NapCat--QQ-完整协议",
+  onebot: channelsDocUrl("zh", "OneBot-v11NapCat--QQ-完整协议"),
 };
 
 const TWILIO_CONSOLE_URL = "https://console.twilio.com";
@@ -1273,11 +1273,9 @@ export function ChannelDrawer({
               const url =
                 CHANNEL_DOC_EN_URLS[activeKey]! ||
                 CHANNEL_DOC_ZH_URLS[activeKey]!;
-              const isQwenPawDoc = url.includes(
-                "qwenpaw.agentscope.io/docs/channels/",
-              );
+              const isChannelsDocPage = url.includes("/docs/channels/");
               const finalUrl =
-                isQwenPawDoc && currentLang === "zh"
+                isChannelsDocPage && currentLang === "zh"
                   ? CHANNEL_DOC_ZH_URLS[activeKey]!
                   : CHANNEL_DOC_EN_URLS[activeKey]!;
               window.open(finalUrl, "_blank");

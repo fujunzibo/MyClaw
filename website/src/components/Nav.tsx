@@ -77,8 +77,9 @@ export function Nav() {
           className="nav-brand-link flex shrink-0 items-center gap-2 text-lg font-semibold text-neutral-900 no-underline"
           aria-label={projectName}
         >
-          <span className="nav-brand-logo -mt-1 flex">
-            <QwenpawMascot size={120} />
+          <span className="nav-brand-logo -mt-1 flex items-center gap-2">
+            <QwenpawMascot size={32} />
+            <span className="whitespace-nowrap">{projectName}</span>
           </span>
         </Link>
         <div className="nav-links hidden min-[641px]:flex min-[641px]:items-center min-[641px]:gap-6 lg:gap-8">
@@ -91,7 +92,7 @@ export function Nav() {
             target="_blank"
             rel="noopener noreferrer"
             className={navLinkOrangeClass}
-            title="QwenPaw on GitHub"
+            title="MyClaw on GitHub"
           >
             <GitHubIcon />
             <span>{t("nav.github")}</span>
@@ -163,7 +164,7 @@ export function Nav() {
           rel="noopener noreferrer"
           className={navLinkOrangeClass}
           onClick={() => setOpen(false)}
-          title="QwenPaw on GitHub"
+          title="MyClaw on GitHub"
         >
           <GitHubIcon /> {t("nav.github")}
         </a>

@@ -110,7 +110,7 @@ SECRET_DIR = (
     .resolve()
 )
 
-PROJECT_NAME = "QwenPaw"
+PROJECT_NAME = "MyClaw"
 
 # Default media directory for channels (cross-platform)
 DEFAULT_MEDIA_DIR = WORKING_DIR / "media"

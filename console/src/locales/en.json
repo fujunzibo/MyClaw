@@ -1492,6 +1492,7 @@
     "modelNotConfigured": "Please configure a model in Settings before using chat"
   },
   "header": {
+    "brandName": "MyClaw",
     "changelog": "Changelog",
     "docs": "Doc",
     "tutorial": "Tutorial",

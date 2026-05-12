@@ -18,7 +18,7 @@
 
 ## 技能结构
 
-QwenPaw 的 skills 分为两层：
+MyClaw 的 skills 分为两层：
 
 - **技能池：** 共享本地仓库，路径是 `$QWENPAW_WORKING_DIR/skill_pool/`
   （默认 `~/.qwenpaw/skill_pool/`）。
@@ -62,7 +62,7 @@ $QWENPAW_WORKING_DIR/                      # 默认 ~/.qwenpaw
   能。改成新名字保存时，会生成一个改名后的条目。内置技能不能用原名字原地定
   制覆盖；如果要改 builtin，必须另存为新名字，原 builtin 槽位保持不动。
 - **冲突：** 如果保存、导入、上传或广播后会落到一个已经存在的名字上，
-  QwenPaw 不会静默覆盖，而是直接返回冲突。界面 / API 会同时给出一个建议的新名
+  MyClaw 不会静默覆盖，而是直接返回冲突。界面 / API 会同时给出一个建议的新名
   字，便于你按这个名字重试。
 
 向池子中添加技能的方式：
@@ -75,12 +75,12 @@ $QWENPAW_WORKING_DIR/                      # 默认 ~/.qwenpaw
    | **browser_cdp**               | 连接到已运行的 Chrome 或以开启 CDP / 远程调试的方式启动浏览器。仅在用户明确要求 CDP 时使用。       | 自建                                                           |
    | **browser_visible**           | 以可见模式（headed）启动真实浏览器窗口，适用于演示、调试或需要人工参与的场景。                     | 自建                                                           |
    | **channel_message**           | 在先定位目标 session / channel 后，主动向会话或频道发送单向消息。                                  | 自建                                                           |
-   | **QA_source_index**           | QwenPaw 自身源码与文档的快速索引技能，用于把关键词映射到本地源码路径和文档。                       | 自建                                                           |
+   | **QA_source_index**           | MyClaw 自身源码与文档的快速索引技能，用于把关键词映射到本地源码路径和文档。                       | 自建                                                           |
    | **cron**                      | 定时任务管理。通过 `qwenpaw cron` 或控制台定时任务创建、查询、暂停、恢复、删除定时任务。           | 自建                                                           |
    | **dingtalk_channel**          | 通过可视浏览器辅助完成钉钉频道接入流程，并提示用户完成必要手动步骤。                               | 自建                                                           |
    | **docx**                      | Word 文档（.docx）的创建、阅读、编辑，含目录、页眉页脚、表格、图片、修订与批注等。                 | https://github.com/anthropics/skills/tree/main/skills/docx     |
    | **file_reader**               | 读取与摘要文本类文件（如 .txt、.md、.json、.csv、.log、.py 等）。PDF 与 Office 由专用 Skill 处理。 | 自建                                                           |
-   | **guidance**                  | 回答 QwenPaw 安装与配置问题，优先查本地文档。                                                      | 自建                                                           |
+   | **guidance**                  | 回答 MyClaw 安装与配置问题，优先查本地文档。                                                      | 自建                                                           |
    | **himalaya**                  | 通过 CLI 管理邮件（IMAP/SMTP）。使用 `himalaya` 列出、阅读、搜索、整理邮件。                       | https://github.com/openclaw/openclaw/tree/main/skills/himalaya |
    | **multi_agent_collaboration** | 当用户明确要求其他 agent 参与，或需要其他 agent 的上下文与能力时，用于协作与双向沟通。             | 自建                                                           |
    | **news**                      | 从指定新闻站点查询最新新闻，支持政治、财经、社会、国际、科技、体育、娱乐等分类，并做摘要。         | 自建                                                           |
@@ -212,14 +212,14 @@ $QWENPAW_WORKING_DIR/                      # 默认 ~/.qwenpaw
 ### 5. 手动创建
 
 也可以直接在 `$QWENPAW_WORKING_DIR/workspaces/{agent_id}/skills/` 下创建 skill 文件，包括让
-QwenPaw 帮你写这些文件。
+MyClaw 帮你写这些文件。
 
 这种方式更灵活，但写入位置和 skill 质量不一定总是可控。你需要监督创建过程，
 确认文件确实写进了正确的工作区目录，并检查 skill 内容质量后再使用。
 
 在 `$QWENPAW_WORKING_DIR/workspaces/{agent_id}/skills/` 下新建目录，并放入 `SKILL.md`。
 `SKILL.md` 必须包含带 `name` 和 `description` 的 YAML front matter。若 Skill
-依赖外部二进制或环境变量，可在 `metadata.requires` 中声明；QwenPaw 会将其透出为
+依赖外部二进制或环境变量，可在 `metadata.requires` 中声明；MyClaw 会将其透出为
 `require_bins` 和 `require_envs` 元数据，但不会因此自动禁用 Skill。
 
 #### SKILL.md 示例
@@ -273,7 +273,7 @@ Discord 上。
 ## Skill Config 运行时注入
 
 每个 Skill 可以在 manifest 条目中存储一个 `config` 对象。这个 config 不只是
-展示字段。当某个 Skill 在当前 workspace 和频道下生效时，QwenPaw 会在该次 Agent
+展示字段。当某个 Skill 在当前 workspace 和频道下生效时，MyClaw 会在该次 Agent
 运行期间把它注入到运行时环境中，Skill 结束后再回滚。
 
 可以在控制台 **工作区 → 技能** 中点击技能的配置图标设置 config，也可以通过

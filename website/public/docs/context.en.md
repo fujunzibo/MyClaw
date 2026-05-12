@@ -6,11 +6,11 @@ Imagine the LLM's context window as a **backpack with limited capacity** 🎒. E
 
 **Context management** is a set of mechanisms that help you "manage your backpack", ensuring the AI can work continuously and efficiently.
 
-> The context management mechanism is inspired by [OpenClaw](https://github.com/openclaw/openclaw) and independently implemented via **LightContextManager** in QwenPaw.
+> The context management mechanism is inspired by [OpenClaw](https://github.com/openclaw/openclaw) and independently implemented via **LightContextManager** in MyClaw.
 
 ### How It Works — Summary
 
-QwenPaw context management uses two parallel offload paths to handle the limited context window:
+MyClaw context management uses two parallel offload paths to handle the limited context window:
 
 | Mechanism                          | Triggered When                        | Offload Target            | What Stays in Context                    |
 | ---------------------------------- | ------------------------------------- | ------------------------- | ---------------------------------------- |
@@ -37,7 +37,7 @@ flowchart LR
 
 ### In-Memory Data Structure
 
-QwenPaw's context consists of two components:
+MyClaw's context consists of two components:
 
 ```mermaid
 flowchart TD
@@ -143,7 +143,7 @@ flowchart LR
 
 ## Compaction Mechanism
 
-When the context approaches its limit, QwenPaw automatically triggers compaction, condensing old conversations into a structured summary.
+When the context approaches its limit, MyClaw automatically triggers compaction, condensing old conversations into a structured summary.
 
 ### 1. compact_tool_result — Tool Result Compaction
 

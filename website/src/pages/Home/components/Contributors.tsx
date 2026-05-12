@@ -223,7 +223,7 @@ export function Contributors() {
                 rel="noopener noreferrer"
                 className="text-(--color-primary) ml-1"
               >
-                agentscope-ai/QwenPaw
+                MyClaw
               </a>
               .
             </p>

@@ -1355,6 +1355,7 @@
     "modelNotConfigured": "请先在设置中配置模型后再使用聊天功能"
   },
   "header": {
+    "brandName": "MyClaw",
     "changelog": "更新日志",
     "docs": "文档",
     "tutorial": "教程",

@@ -31,7 +31,7 @@ from ..config.utils import load_config, save_config
 logger = logging.getLogger(__name__)
 
 _DEFAULT_AGENT_NAME = "Default Agent"
-_DEFAULT_AGENT_DESCRIPTION = "Default QwenPaw agent"
+_DEFAULT_AGENT_DESCRIPTION = "Default MyClaw agent"
 
 # Workspace items to migrate: (name, is_directory)
 _WORKSPACE_ITEMS_TO_MIGRATE = [
@@ -125,7 +125,7 @@ def _do_migrate_legacy_workspace() -> bool:
     default_agent_config = AgentProfileConfig(
         id="default",
         name="Default Agent",
-        description="Default QwenPaw agent (migrated from legacy config)",
+        description="Default MyClaw agent (migrated from legacy config)",
         workspace_dir=str(default_workspace),
         channels=config.channels if hasattr(config, "channels") else None,
         mcp=config.mcp if hasattr(config, "mcp") else None,
@@ -773,7 +773,7 @@ def _apply_legacy_qa_disable_for_migration(config) -> None:
         ref.enabled = False
         logger.info(
             "Disabled legacy builtin QA agent profile %r "
-            "(new QwenPaw builtin QA slot was created)",
+            "(new MyClaw builtin QA slot was created)",
             legacy_id,
         )
     if config.agents.active_agent == legacy_id:
