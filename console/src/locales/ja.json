@@ -1258,8 +1258,9 @@
     "asyncExecutionDisabled": "非同期実行が無効です"
   },
   "modelConfig": {
-    "promptTitle": "LLMモデルが必要です — 設定後にChatページで選択",
-    "promptMessage": "チャット機能にはLLMモデルが必要です。まずモデルを設定し、設定完了後にChatページ上部のモデルセレクターで選択してください。",
+    "promptTitle": "LLM の接続設定が必要です",
+    "promptMessage": "このビルドは OneRouter の OpenAI 互換ゲートウェイのみを使用します（既定の Base URL: https://onerouter.tech/v1）。サーバー環境に QWENPAW_ONEROUTER_API_KEY を設定し、必要なら QWENPAW_ONEROUTER_DEFAULT_MODEL を設定してアプリを再起動し、Chat 上部でモデルを選択してください。",
+    "okButton": "OK",
     "configureButton": "モデルを設定",
     "skipButton": "スキップ",
     "chatDisabledTitle": "チャット無効",

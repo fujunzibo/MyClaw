@@ -37,6 +37,7 @@ from .utils.message_request_normalizer import (
     normalize_messages_for_model_request,
 )
 from ..exceptions import ProviderError, ModelFormatterError
+from ..config.config import ModelSlotConfig
 from ..providers import ProviderManager
 from ..providers.retry_chat_model import (
     RetryChatModel,
@@ -1007,14 +1008,28 @@ def create_model_and_formatter(
     if model_slot and model_slot.provider_id and model_slot.model:
         # Use agent-specific model
         manager = ProviderManager.get_instance()
-        provider = manager.get_provider(model_slot.provider_id)
+        requested_pid = model_slot.provider_id
+        provider = manager.get_provider(requested_pid)
+        if provider is None:
+            from ..constant import ONEROUTER_PROVIDER_ID
+
+            provider = manager.get_provider(ONEROUTER_PROVIDER_ID)
+            if provider is not None:
+                model_slot = ModelSlotConfig(
+                    provider_id=ONEROUTER_PROVIDER_ID,
+                    model=model_slot.model,
+                )
         if provider is None:
             raise ProviderError(
-                message=f"Provider '{model_slot.provider_id}' not found.",
+                message=f"Provider '{requested_pid}' not found.",
             )
 
-        model = provider.get_chat_model_instance(model_slot.model)
-        provider_id = model_slot.provider_id
+        mid = ProviderManager.resolve_effective_llm_model_id(
+            provider.id,
+            model_slot.model,
+        )
+        model = provider.get_chat_model_instance(mid)
+        provider_id = provider.id
     else:
         # Fallback to global active model
         model = ProviderManager.get_active_chat_model()
@@ -1023,8 +1038,9 @@ def create_model_and_formatter(
             raise ProviderError(
                 message=(
                     "No active model configured. "
-                    "Please configure a model using 'qwenpaw models config' "
-                    "or set an agent-specific model."
+                    "Set QWENPAW_ONEROUTER_API_KEY; optionally "
+                    "QWENPAW_ONEROUTER_DEFAULT_MODEL, or pick a model in chat; "
+                    "or set an agent-specific model id."
                 ),
             )
         provider_id = global_model.provider_id

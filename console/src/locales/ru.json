@@ -1273,8 +1273,9 @@
     "asyncExecutionDisabled": "Асинхронное выполнение отключено"
   },
   "modelConfig": {
-    "promptTitle": "Требуется LLM-модель — выберите в Chat после настройки",
-    "promptMessage": "Для работы чата нужна LLM-модель. Сначала настройте модель, затем выберите её в селекторе моделей вверху страницы Chat.",
+    "promptTitle": "Требуется доступ к LLM",
+    "promptMessage": "В этой сборке используется только шлюз OneRouter в режиме совместимости с OpenAI (базовый URL по умолчанию: https://onerouter.tech/v1). Задайте QWENPAW_ONEROUTER_API_KEY в окружении сервера, при необходимости QWENPAW_ONEROUTER_DEFAULT_MODEL, перезапустите приложение и выберите модель в заголовке Chat.",
+    "okButton": "OK",
     "configureButton": "Настроить модель",
     "skipButton": "Пропустить",
     "chatDisabledTitle": "Чат отключён",

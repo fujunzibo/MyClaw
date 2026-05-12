@@ -84,11 +84,11 @@ def test_model_flag_overrides_agent_config(monkeypatch) -> None:
 
     CliRunner().invoke(
         cli,
-        ["task", "-i", "hello", "-m", "dashscope/qwen3.6-plus"],
+        ["task", "-i", "hello", "-m", "onerouter/qwen3.6-plus"],
     )
 
     assert fake_config.active_model is not None
-    assert fake_config.active_model.provider_id == "dashscope"
+    assert fake_config.active_model.provider_id == "onerouter"
     assert fake_config.active_model.model == "qwen3.6-plus"
 
 

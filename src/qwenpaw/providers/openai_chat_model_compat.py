@@ -3,19 +3,75 @@
 
 from __future__ import annotations
 
+import inspect
 import json
 from datetime import datetime
 from types import SimpleNamespace
-from typing import Any, AsyncGenerator, Type
+from typing import Any, AsyncGenerator, Literal, Type
+
+import warnings
 
 from agentscope.model import OpenAIChatModel
 from agentscope.model._model_response import ChatResponse
+from agentscope.model._openai_model import _format_audio_data_for_qwen_omni
+from agentscope.tracing import trace_llm
 from pydantic import BaseModel
 
+from qwenpaw.constant import ONEROUTER_FALLBACK_MODEL_ID
 from qwenpaw.local_models.tag_parser import (
     parse_tool_calls_from_text,
     text_contains_tool_call_tag,
 )
+
+
+def _openai_completion_json_body(body: dict[str, Any]) -> dict[str, Any]:
+    """Strip OpenAI SDK sentinels for ``AsyncOpenAI.post`` JSON bodies."""
+    try:
+        from openai._types import Omit
+        from openai._utils import strip_not_given
+    except ImportError:
+        return {k: v for k, v in body.items() if k != "model"}
+
+    cleaned = strip_not_given(dict(body))
+    return {k: v for k, v in cleaned.items() if not isinstance(v, Omit) and k != "model"}
+
+
+async def _post_chat_completions_via_http(
+    client: Any,
+    body: dict[str, Any],
+) -> Any:
+    """POST ``/chat/completions`` without ``chat.completions.create``.
+
+    The OpenAI Python SDK (1.x) requires a ``model`` argument on
+    ``create()``, but some OpenAI-compatible gateways accept HTTP bodies
+    without a ``model`` field.  ``AsyncOpenAI.post`` sends the JSON as given.
+    """
+    from openai._base_client import make_request_options
+    from openai._streaming import AsyncStream
+    from openai.types.chat import ChatCompletion
+    from openai.types.chat.chat_completion_chunk import ChatCompletionChunk
+
+    payload = _openai_completion_json_body(body)
+    stream = bool(payload.get("stream"))
+    # Older openai-python releases omit ``security`` on ``make_request_options``;
+    # bearer auth still comes from ``AsyncOpenAI`` client defaults.
+    try:
+        sig = inspect.signature(make_request_options)
+        if "security" in sig.parameters:
+            req_opts = make_request_options(security={"bearer_auth": True})
+        else:
+            req_opts = make_request_options()
+    except TypeError:
+        req_opts = {}
+
+    return await client.post(
+        "/chat/completions",
+        cast_to=ChatCompletion,
+        body=payload,
+        stream=stream,
+        stream_cls=AsyncStream[ChatCompletionChunk],
+        options=req_opts,
+    )
 
 
 def _clone_with_overrides(obj: Any, **overrides: Any) -> Any:
@@ -310,3 +366,179 @@ class OpenAIChatModelCompat(OpenAIChatModel):
                     parsed.content = list(parsed.content) + extra
 
             yield parsed
+
+
+class OpenAIChatModelOmitModelField(OpenAIChatModelCompat):
+    """OpenAI-compatible chat without a ``model`` field in the request body.
+
+    Some gateways (e.g. OneRouter) infer the model server-side from the API
+    key, matching minimal ``curl`` / ``Invoke-WebRequest`` bodies that only
+    send ``messages``.
+    """
+
+    # pylint: disable=too-many-branches
+    @trace_llm
+    async def __call__(  # type: ignore[override]
+        self,
+        messages: list[dict],
+        tools: list[dict] | None = None,
+        tool_choice: Literal["auto", "none", "required"] | str | None = None,
+        structured_model: Type[BaseModel] | None = None,
+        **kwargs: Any,
+    ) -> ChatResponse | AsyncGenerator[ChatResponse, None]:
+        if not isinstance(messages, list):
+            raise ValueError(
+                "OpenAI `messages` field expected type `list`, "
+                f"got `{type(messages)}` instead.",
+            )
+        if not all("role" in msg and "content" in msg for msg in messages):
+            raise ValueError(
+                "Each message in the 'messages' list must contain a 'role' "
+                "and 'content' key for OpenAI API.",
+            )
+
+        if self.model_name and "omni" in self.model_name.lower():
+            _format_audio_data_for_qwen_omni(messages)
+
+        kwargs_out = {
+            "messages": messages,
+            "stream": self.stream,
+            **self.generate_kwargs,
+            **kwargs,
+        }
+        if self.reasoning_effort and "reasoning_effort" not in kwargs_out:
+            kwargs_out["reasoning_effort"] = self.reasoning_effort
+
+        if tools:
+            kwargs_out["tools"] = self._format_tools_json_schemas(tools)
+
+        if tool_choice:
+            if tool_choice == "any":
+                warnings.warn(
+                    '"any" is deprecated and will be removed in a future '
+                    "version.",
+                    DeprecationWarning,
+                )
+                tool_choice = "required"
+            self._validate_tool_choice(tool_choice, tools)
+            kwargs_out["tool_choice"] = self._format_tool_choice(tool_choice)
+
+        if self.stream:
+            kwargs_out["stream_options"] = {"include_usage": True}
+
+        start_datetime = datetime.now()
+        _sdk_structured_model = (
+            (self.model_name or "").strip() or ONEROUTER_FALLBACK_MODEL_ID
+        )
+
+        if structured_model:
+            import openai
+
+            if tools or tool_choice:
+                from agentscope._logging import logger as _log
+
+                _log.warning(
+                    "structured_model is provided. Both 'tools' and "
+                    "'tool_choice' parameters will be overridden and "
+                    "ignored. The model will only perform structured output "
+                    "generation without calling any other tools.",
+                )
+            kwargs_out.pop("stream", None)
+            kwargs_out.pop("tools", None)
+            kwargs_out.pop("tool_choice", None)
+
+            if self._structured_output_fallback:
+                response = await self._structured_via_tool_call(
+                    kwargs_out,
+                    structured_model,
+                    start_datetime,
+                )
+                if isinstance(response, AsyncGenerator):
+                    return response
+            else:
+                kwargs_out["response_format"] = structured_model
+                try:
+                    if not self.stream:
+                        response = await self.client.chat.completions.parse(
+                            **kwargs_out,
+                            model=_sdk_structured_model,
+                        )
+                    else:
+                        response = self.client.chat.completions.stream(
+                            **kwargs_out,
+                            model=_sdk_structured_model,
+                        )
+                        return self._structured_stream_with_fallback(
+                            start_datetime,
+                            response,
+                            structured_model,
+                            kwargs_out,
+                        )
+                except openai.BadRequestError as e:
+                    from agentscope._logging import logger as _log
+
+                    _log.warning(
+                        "response_format structured output failed (%s: %s), "
+                        "falling back to tool-call based structured output. "
+                        "Subsequent calls will use tool-call directly.",
+                        type(e).__name__,
+                        e,
+                    )
+                    self._structured_output_fallback = True
+                    response = await self._structured_via_tool_call(
+                        kwargs_out,
+                        structured_model,
+                        start_datetime,
+                    )
+                    if isinstance(response, AsyncGenerator):
+                        return response
+        else:
+            response = await _post_chat_completions_via_http(
+                self.client,
+                kwargs_out,
+            )
+
+        if self.stream:
+            return self._parse_openai_stream_response(
+                start_datetime,
+                response,
+                structured_model,
+            )
+
+        parsed_response = self._parse_openai_completion_response(
+            start_datetime,
+            response,
+            structured_model,
+        )
+
+        return parsed_response
+
+    async def _structured_via_tool_call(  # type: ignore[override]
+        self,
+        kwargs: dict,
+        structured_model: Type[BaseModel],
+        start_datetime: datetime,
+    ) -> Any:
+        """Like ``OpenAIChatModel._structured_via_tool_call`` but HTTP POST
+        without a ``model`` field (OpenAI SDK ``create`` requires ``model``).
+        """
+        from agentscope._utils._common import _create_tool_from_base_model
+
+        kwargs = dict(kwargs)
+        kwargs.pop("response_format", None)
+        format_tool = _create_tool_from_base_model(structured_model)
+        kwargs["tools"] = self._format_tools_json_schemas([format_tool])
+        kwargs["tool_choice"] = self._format_tool_choice(
+            format_tool["function"]["name"],
+        )
+        if self.stream:
+            kwargs["stream"] = True
+            kwargs["stream_options"] = {"include_usage": True}
+        response = await _post_chat_completions_via_http(self.client, kwargs)
+        if self.stream:
+            return self._parse_openai_stream_response(
+                start_datetime,
+                response,
+                structured_model,
+            )
+        return response

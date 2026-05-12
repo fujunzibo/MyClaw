@@ -6,7 +6,7 @@ import {
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Button, Modal, Result, Tooltip } from "antd";
 import { useAppMessage } from "../../hooks/useAppMessage";
-import { ExclamationCircleOutlined, SettingOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { SparkCopyLine, SparkAttachmentLine } from "@agentscope-ai/icons";
 import { usePlugins } from "../../plugins/PluginContext";
 import { useTranslation } from "react-i18next";
@@ -18,7 +18,6 @@ import { getApiUrl } from "../../api/config";
 import { buildAuthHeaders } from "../../api/authHeaders";
 import { providerApi } from "../../api/modules/provider";
 import type { ProviderInfo, ModelInfo } from "../../api/types";
-import ModelSelector from "./ModelSelector";
 import { useTheme } from "../../contexts/ThemeContext";
 import { useAgentStore } from "../../stores/agentStore";
 import { useChatAnywhereInput } from "@agentscope-ai/chat";
@@ -274,15 +273,6 @@ function useMultimodalCapabilities(
       fetchMultimodalCaps();
     }
   }, [locationPathname, fetchMultimodalCaps, isChatActive]);
-
-  // Listen for model-switched event from ModelSelector
-  useEffect(() => {
-    const handler = () => {
-      fetchMultimodalCaps();
-    };
-    window.addEventListener("model-switched", handler);
-    return () => window.removeEventListener("model-switched", handler);
-  }, [fetchMultimodalCaps]);
 
   return multimodalCaps;
 }
@@ -998,7 +988,6 @@ export default function ChatPage() {
             <RuntimeLoadingBridge bridgeRef={runtimeLoadingBridgeRef} />
             <ChatHeaderTitle />
             <span style={{ flex: 1 }} />
-            <ModelSelector />
             <ChatActionGroup />
           </>
         ),
@@ -1242,19 +1231,12 @@ export default function ChatPage() {
             </span>
           }
           extra={[
-            <Button key="skip" onClick={() => setShowModelPrompt(false)}>
-              {t("modelConfig.skipButton")}
-            </Button>,
             <Button
-              key="configure"
+              key="ok"
               type="primary"
-              icon={<SettingOutlined />}
-              onClick={() => {
-                setShowModelPrompt(false);
-                navigate("/models");
-              }}
+              onClick={() => setShowModelPrompt(false)}
             >
-              {t("modelConfig.configureButton")}
+              {t("modelConfig.okButton", "知道了")}
             </Button>,
           ]}
         />

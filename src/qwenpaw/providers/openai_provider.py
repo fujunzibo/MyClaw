@@ -142,7 +142,16 @@ class OpenAIProvider(Provider):
             )
 
     def get_chat_model_instance(self, model_id: str) -> ChatModelBase:
-        from .openai_chat_model_compat import OpenAIChatModelCompat
+        from qwenpaw.constant import (
+            ONEROUTER_PROVIDER_ID,
+            EnvVarLoader,
+            onerouter_omit_model_in_request,
+        )
+
+        from .openai_chat_model_compat import (
+            OpenAIChatModelCompat,
+            OpenAIChatModelOmitModelField,
+        )
 
         client_kwargs = {"base_url": self.base_url}
 
@@ -175,7 +184,16 @@ class OpenAIProvider(Provider):
                 ),
             }
 
-        return OpenAIChatModelCompat(
+        use_omit = (
+            self.id == ONEROUTER_PROVIDER_ID
+            and onerouter_omit_model_in_request()
+            and not EnvVarLoader.get_str(
+                "QWENPAW_ONEROUTER_DEFAULT_MODEL",
+                "",
+            ).strip()
+        )
+        cls = OpenAIChatModelOmitModelField if use_omit else OpenAIChatModelCompat
+        return cls(
             model_name=model_id,
             stream=True,
             api_key=self.api_key,

@@ -1345,8 +1345,9 @@
     "asyncExecutionDisabled": "异步执行已禁用"
   },
   "modelConfig": {
-    "promptTitle": "需要配置 LLM 模型，配置模型后在 Chat 页面选择",
-    "promptMessage": "聊天功能需要 LLM 模型才能运行。请先配置模型，配置完成后在 Chat 页面顶部的模型选择器中选择即可使用。",
+    "promptTitle": "需要配置 LLM 访问",
+    "promptMessage": "本版本仅支持 OneRouter OpenAI 兼容网关（默认 Base URL：https://onerouter.tech/v1）。请在运行环境中设置 QWENPAW_ONEROUTER_API_KEY，并可选设置 QWENPAW_ONEROUTER_DEFAULT_MODEL；配置后重启服务，然后在 Chat 顶部选择具体模型。",
+    "okButton": "知道了",
     "configureButton": "配置模型",
     "skipButton": "跳过",
     "chatDisabledTitle": "聊天已禁用",

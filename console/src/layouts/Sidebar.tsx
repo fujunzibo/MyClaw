@@ -21,7 +21,6 @@ import {
   SparkVoiceChat01Line,
   SparkMagicWandLine,
   SparkLocalFileLine,
-  SparkModePlazaLine,
   SparkInternetLine,
   SparkModifyLine,
   SparkBrowseLine,
@@ -223,12 +222,6 @@ export default function Sidebar({ selectedKey }: SidebarProps) {
       label: t("nav.agents"),
     },
     {
-      key: "models",
-      icon: <SparkModePlazaLine size={18} />,
-      path: "/models",
-      label: t("nav.models"),
-    },
-    {
       key: "environments",
       icon: <SparkInternetLine size={18} />,
       path: "/environments",
@@ -361,11 +354,6 @@ export default function Sidebar({ selectedKey }: SidebarProps) {
           key: "agents",
           label: collapsed ? null : t("nav.agents"),
           icon: <SparkAgentLine size={16} />,
-        },
-        {
-          key: "models",
-          label: collapsed ? null : t("nav.models"),
-          icon: <SparkModePlazaLine size={16} />,
         },
         {
           key: "skill-pool",

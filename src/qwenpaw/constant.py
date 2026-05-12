@@ -112,6 +112,32 @@ SECRET_DIR = (
 
 PROJECT_NAME = "MyClaw"
 
+# Single OpenAI-compatible LLM gateway (built-in provider id ``onerouter``).
+ONEROUTER_PROVIDER_ID = "onerouter"
+ONEROUTER_DEFAULT_BASE_URL = EnvVarLoader.get_str(
+    "QWENPAW_ONEROUTER_BASE_URL",
+    "https://onerouter.tech/v1",
+).rstrip("/")
+
+# OpenAI-compatible ``POST /v1/chat/completions`` model field when none is set
+# or when a legacy id (e.g. Baichuan-*) is still stored in config.
+ONEROUTER_FALLBACK_MODEL_ID = EnvVarLoader.get_str(
+    "QWENPAW_ONEROUTER_FALLBACK_MODEL_ID",
+    "gpt-4o-mini",
+).strip() or "gpt-4o-mini"
+
+
+def onerouter_omit_model_in_request() -> bool:
+    """When True and ``QWENPAW_ONEROUTER_DEFAULT_MODEL`` is unset, chat
+    completions omit the JSON ``model`` field so the gateway can route from
+    the API key alone (OpenAI-compatible minimal body).
+
+    Set ``QWENPAW_ONEROUTER_OMIT_MODEL_IN_REQUEST=false`` to always send an
+    explicit ``model`` (using stored id or ``ONEROUTER_FALLBACK_MODEL_ID``).
+    """
+    return EnvVarLoader.get_bool("QWENPAW_ONEROUTER_OMIT_MODEL_IN_REQUEST", True)
+
+
 # Default media directory for channels (cross-platform)
 DEFAULT_MEDIA_DIR = WORKING_DIR / "media"
 

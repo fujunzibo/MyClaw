@@ -25,7 +25,6 @@ const ToolsPage = lazyImportWithRetry("../../pages/Agent/Tools");
 const WorkspacePage = lazyImportWithRetry("../../pages/Agent/Workspace");
 const MCPPage = lazyImportWithRetry("../../pages/Agent/MCP");
 const ACPPage = lazyImportWithRetry("../../pages/Agent/ACP");
-const ModelsPage = lazyImportWithRetry("../../pages/Settings/Models");
 const EnvironmentsPage = lazyImportWithRetry(
   "../../pages/Settings/Environments",
 );
@@ -54,7 +53,6 @@ const pathToKey: Record<string, string> = {
   "/acp": "acp",
   "/workspace": "workspace",
   "/agents": "agents",
-  "/models": "models",
   "/environments": "environments",
   "/agent-config": "agent-config",
   "/security": "security",
@@ -114,7 +112,10 @@ export default function MainLayout() {
                   <Route path="/ACP" element={<Navigate to="/acp" replace />} />
                   <Route path="/workspace" element={<WorkspacePage />} />
                   <Route path="/agents" element={<AgentsPage />} />
-                  <Route path="/models" element={<ModelsPage />} />
+                  <Route
+                    path="/models"
+                    element={<Navigate to="/chat" replace />}
+                  />
                   <Route path="/environments" element={<EnvironmentsPage />} />
                   <Route path="/agent-config" element={<AgentConfigPage />} />
                   <Route path="/security" element={<SecurityPage />} />

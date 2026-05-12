@@ -1482,8 +1482,9 @@
     "asyncExecutionDisabled": "Async execution disabled"
   },
   "modelConfig": {
-    "promptTitle": "LLM Model Required — Select in Chat After Configuration",
-    "promptMessage": "Chat requires an LLM model to function. Please configure a model first, then select it from the model selector at the top of the Chat page.",
+    "promptTitle": "LLM access required",
+    "promptMessage": "This build uses only the OneRouter OpenAI-compatible gateway (default base URL: https://onerouter.tech/v1). Set QWENPAW_ONEROUTER_API_KEY in the server environment, optionally QWENPAW_ONEROUTER_DEFAULT_MODEL, restart the app, then pick a model from the Chat header.",
+    "okButton": "OK",
     "configureButton": "Configure Model",
     "skipButton": "Skip",
     "chatDisabledTitle": "Chat Disabled",

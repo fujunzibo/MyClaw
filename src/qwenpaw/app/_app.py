@@ -308,6 +308,25 @@ async def lifespan(  # pylint: disable=too-many-statements,too-many-branches
 
             provider_manager.start_local_model_resume(local_model_manager)
 
+            try:
+                from ..constant import ONEROUTER_PROVIDER_ID
+
+                orp = provider_manager.get_provider(ONEROUTER_PROVIDER_ID)
+                if (
+                    orp
+                    and orp.api_key
+                    and not (orp.models or orp.extra_models)
+                ):
+                    await provider_manager.fetch_provider_models(
+                        ONEROUTER_PROVIDER_ID,
+                        save=True,
+                    )
+            except Exception as exc:
+                logger.warning(
+                    "OneRouter model list bootstrap failed: %s",
+                    exc,
+                )
+
             # ---- Plugin System ----
             logger.debug("Initializing plugin system...")
 

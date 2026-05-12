@@ -16,14 +16,20 @@ from agentscope_runtime.engine.schemas.exception import (
     ModelNotFoundException,
 )
 
-from ..constant import SECRET_DIR
+from ..constant import (
+    SECRET_DIR,
+    ONEROUTER_PROVIDER_ID,
+    ONEROUTER_DEFAULT_BASE_URL,
+    ONEROUTER_FALLBACK_MODEL_ID,
+    EnvVarLoader,
+    onerouter_omit_model_in_request,
+)
 from ..config.config import ModelSlotConfig
 from ..exceptions import ProviderError
 from .anthropic_provider import AnthropicProvider
 from .gemini_provider import GeminiProvider
 from .ollama_provider import OllamaProvider
 from .openai_provider import OpenAIProvider
-from .lmstudio_provider import LMStudioProvider
 from .provider import (
     ModelInfo,
     Provider,
@@ -44,697 +50,16 @@ logger = logging.getLogger(__name__)
 # Built-in provider definitions and their default models.
 # -------------------------------------------------------
 
-MODELSCOPE_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="Qwen/Qwen3.5-122B-A10B",
-        name="Qwen3.5-122B-A10B",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="ZhipuAI/GLM-5",
-        name="GLM-5",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
 
-DASHSCOPE_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="qwen3.6-plus",
-        name="Qwen3.6 Plus",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="qwen3-max",
-        name="Qwen3 Max",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="qwen3-235b-a22b-thinking-2507",
-        name="Qwen3 235B A22B Thinking",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="deepseek-v3.2",
-        name="DeepSeek-V3.2",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
-
-ALIYUN_CODINGPLAN_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="qwen3.6-plus",
-        name="Qwen3.6 Plus",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="qwen3.5-plus",
-        name="Qwen3.5 Plus",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="glm-5",
-        name="GLM-5",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="glm-4.7",
-        name="GLM-4.7",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="MiniMax-M2.5",
-        name="MiniMax M2.5",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="kimi-k2.5",
-        name="Kimi K2.5",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="qwen3-max-2026-01-23",
-        name="Qwen3 Max 2026-01-23",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="qwen3-coder-next",
-        name="Qwen3 Coder Next",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="qwen3-coder-plus",
-        name="Qwen3 Coder Plus",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
-
-ZHIPU_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="glm-5",
-        name="glm-5",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="glm-5.1",
-        name="glm-5.1",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="glm-5-turbo",
-        name="glm-5-turbo",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="glm-5v-turbo",
-        name="glm-5v-turbo",
-        supports_image=True,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
-
-OPENAI_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="gpt-5.2",
-        name="GPT-5.2",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-5",
-        name="GPT-5",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-5-mini",
-        name="GPT-5 Mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-5-nano",
-        name="GPT-5 Nano",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4.1",
-        name="GPT-4.1",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4.1-mini",
-        name="GPT-4.1 Mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4.1-nano",
-        name="GPT-4.1 Nano",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="o3",
-        name="o3",
-        supports_image=True,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="o4-mini",
-        name="o4-mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4o",
-        name="GPT-4o",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4o-mini",
-        name="GPT-4o Mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-]
-
-OPENCODE_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="big-pickle",
-        name="Big Pickle",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-        is_free=True,
-    ),
-    ModelInfo(
-        id="nemotron-3-super-free",
-        name="Nemotron 3 Super Free",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-        is_free=True,
-    ),
-]
-
-AZURE_OPENAI_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="gpt-5-chat",
-        name="GPT-5 Chat",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-5-mini",
-        name="GPT-5 Mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-5-nano",
-        name="GPT-5 Nano",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4.1",
-        name="GPT-4.1",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4.1-mini",
-        name="GPT-4.1 Mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4.1-nano",
-        name="GPT-4.1 Nano",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4o",
-        name="GPT-4o",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gpt-4o-mini",
-        name="GPT-4o Mini",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-]
-
-MINIMAX_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="MiniMax-M2.5",
-        name="MiniMax M2.5",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="MiniMax-M2.5-highspeed",
-        name="MiniMax M2.5 Highspeed",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="MiniMax-M2.7",
-        name="MiniMax M2.7",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="MiniMax-M2.7-highspeed",
-        name="MiniMax M2.7 Highspeed",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
-
-KIMI_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="kimi-k2.5",
-        name="Kimi K2.5",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="kimi-k2-0905-preview",
-        name="Kimi K2 0905 Preview",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="kimi-k2-0711-preview",
-        name="Kimi K2 0711 Preview",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="kimi-k2-turbo-preview",
-        name="Kimi K2 Turbo Preview",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="kimi-k2-thinking",
-        name="Kimi K2 Thinking",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="kimi-k2-thinking-turbo",
-        name="Kimi K2 Thinking Turbo",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
-
-DEEPSEEK_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="deepseek-chat",
-        name="DeepSeek Chat",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="deepseek-reasoner",
-        name="DeepSeek Reasoner",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="deepseek-v4-flash",
-        name="DeepSeek V4 Flash",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="deepseek-v4-pro",
-        name="DeepSeek V4 Pro",
-        supports_image=False,
-        supports_video=False,
-        probe_source="documentation",
-    ),
-]
-
-ANTHROPIC_MODELS: List[ModelInfo] = []
-
-GEMINI_MODELS: List[ModelInfo] = [
-    ModelInfo(
-        id="gemini-3.1-pro-preview",
-        name="Gemini 3.1 Pro Preview",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gemini-3-flash-preview",
-        name="Gemini 3 Flash Preview",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gemini-3.1-flash-lite-preview",
-        name="Gemini 3.1 Flash Lite Preview",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gemini-2.5-pro",
-        name="Gemini 2.5 Pro",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gemini-2.5-flash",
-        name="Gemini 2.5 Flash",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gemini-2.5-flash-lite",
-        name="Gemini 2.5 Flash Lite",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-    ModelInfo(
-        id="gemini-2.0-flash",
-        name="Gemini 2.0 Flash",
-        supports_image=True,
-        supports_video=True,
-        probe_source="documentation",
-    ),
-]
-
-PROVIDER_MODELSCOPE = OpenAIProvider(
-    id="modelscope",
-    name="ModelScope",
-    base_url="https://api-inference.modelscope.cn/v1",
-    api_key_prefix="ms",
-    models=MODELSCOPE_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_DASHSCOPE = OpenAIProvider(
-    id="dashscope",
-    name="DashScope",
-    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
-    api_key_prefix="sk",
-    models=DASHSCOPE_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_ALIYUN_CODINGPLAN = OpenAIProvider(
-    id="aliyun-codingplan",
-    name="Aliyun Coding Plan (China)",
-    base_url="https://coding.dashscope.aliyuncs.com/v1",
-    api_key_prefix="sk-sp",
-    models=ALIYUN_CODINGPLAN_MODELS,
-    # This provider doesn't support connection check without model config
-    support_connection_check=False,
-    freeze_url=True,
-)
-
-PROVIDER_ALIYUN_CODINGPLAN_INTL = OpenAIProvider(
-    id="aliyun-codingplan-intl",
-    name="Aliyun Coding Plan (International)",
-    base_url="https://coding-intl.dashscope.aliyuncs.com/v1",
-    api_key_prefix="sk-sp",
-    models=ALIYUN_CODINGPLAN_MODELS,
-    # This provider doesn't support connection check without model config
-    support_connection_check=False,
-    freeze_url=True,
-)
-
-PROVIDER_ZHIPU_CN = OpenAIProvider(
-    id="zhipu-cn",
-    name="Zhipu (BigModel)",
-    base_url="https://open.bigmodel.cn/api/paas/v4",
+PROVIDER_ONEROUTER = OpenAIProvider(
+    id=ONEROUTER_PROVIDER_ID,
+    name="OneRouter",
+    base_url=ONEROUTER_DEFAULT_BASE_URL,
     api_key_prefix="",
-    models=ZHIPU_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_ZHIPU_CN_CODINGPLAN = OpenAIProvider(
-    id="zhipu-cn-codingplan",
-    name="Zhipu Coding Plan (BigModel)",
-    base_url="https://open.bigmodel.cn/api/coding/paas/v4",
-    api_key_prefix="",
-    models=ZHIPU_MODELS,
-    freeze_url=True,
-    support_connection_check=False,
-)
-
-PROVIDER_ZHIPU_INTL = OpenAIProvider(
-    id="zhipu-intl",
-    name="Zhipu (Z.AI)",
-    base_url="https://api.z.ai/api/paas/v4",
-    api_key_prefix="",
-    models=ZHIPU_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_ZHIPU_INTL_CODINGPLAN = OpenAIProvider(
-    id="zhipu-intl-codingplan",
-    name="Zhipu Coding Plan (Z.AI)",
-    base_url="https://api.z.ai/api/coding/paas/v4",
-    api_key_prefix="",
-    models=ZHIPU_MODELS,
-    freeze_url=True,
-    support_connection_check=False,
-)
-
-PROVIDER_QWENPAW = OpenAIProvider(
-    id="qwenpaw-local",
-    name="MyClaw Local",
-    is_local=True,
-    require_api_key=False,
-)
-
-PROVIDER_OPENAI = OpenAIProvider(
-    id="openai",
-    name="OpenAI",
-    base_url="https://api.openai.com/v1",
-    api_key_prefix="sk-",
-    models=OPENAI_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_OPENCODE = OpenAIProvider(
-    id="opencode",
-    name="OpenCode",
-    base_url="https://opencode.ai/zen/v1",
-    api_key_prefix="",
-    models=OPENCODE_MODELS,
-    freeze_url=True,
-    require_api_key=False,
-)
-
-PROVIDER_AZURE_OPENAI = OpenAIProvider(
-    id="azure-openai",
-    name="Azure OpenAI",
-    api_key_prefix="",
-    models=AZURE_OPENAI_MODELS,
-)
-
-PROVIDER_MINIMAX = AnthropicProvider(
-    id="minimax",
-    name="MiniMax (International)",
-    base_url="https://api.minimax.io/anthropic",
-    models=MINIMAX_MODELS,
-    chat_model="AnthropicChatModel",
-    freeze_url=True,
-    # This provider doesn't support connection check without model config
-    support_connection_check=False,
-)
-
-PROVIDER_MINIMAX_CN = AnthropicProvider(
-    id="minimax-cn",
-    name="MiniMax (China)",
-    base_url="https://api.minimaxi.com/anthropic",
-    models=MINIMAX_MODELS,
-    chat_model="AnthropicChatModel",
-    freeze_url=True,
-    # This provider doesn't support connection check without model config
-    support_connection_check=False,
-)
-
-PROVIDER_KIMI_CN = OpenAIProvider(
-    id="kimi-cn",
-    name="Kimi (China)",
-    base_url="https://api.moonshot.cn/v1",
-    api_key_prefix="",
-    models=KIMI_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_KIMI_INTL = OpenAIProvider(
-    id="kimi-intl",
-    name="Kimi (International)",
-    base_url="https://api.moonshot.ai/v1",
-    api_key_prefix="",
-    models=KIMI_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_DEEPSEEK = OpenAIProvider(
-    id="deepseek",
-    name="DeepSeek",
-    base_url="https://api.deepseek.com",
-    api_key_prefix="sk-",
-    models=DEEPSEEK_MODELS,
-    freeze_url=True,
-)
-
-PROVIDER_ANTHROPIC = AnthropicProvider(
-    id="anthropic",
-    name="Anthropic",
-    base_url="https://api.anthropic.com",
-    api_key_prefix="sk-ant-",
-    models=ANTHROPIC_MODELS,
-    chat_model="AnthropicChatModel",
-    freeze_url=True,
-)
-
-PROVIDER_GEMINI = GeminiProvider(
-    id="gemini",
-    name="Google Gemini",
-    base_url="https://generativelanguage.googleapis.com",
-    api_key_prefix="",
-    models=GEMINI_MODELS,
-    chat_model="GeminiChatModel",
-    freeze_url=True,
-)
-
-PROVIDER_OLLAMA = OllamaProvider(
-    id="ollama",
-    name="Ollama",
-    is_local=True,
-    require_api_key=False,
-    support_model_discovery=True,
-    generate_kwargs={"max_tokens": None},
-)
-
-PROVIDER_OPENROUTER = OpenRouterProvider(
-    id="openrouter",
-    name="OpenRouter",
-    base_url="https://openrouter.ai/api/v1",
-    api_key_prefix="sk-or-v1-",
-    models=[],
-    freeze_url=True,
-)
-
-PROVIDER_LMSTUDIO = LMStudioProvider(
-    id="lmstudio",
-    name="LM Studio",
-    is_local=True,
-    base_url="http://localhost:1234/v1",
-    require_api_key=False,
-    api_key_prefix="",
-    support_model_discovery=True,
-    generate_kwargs={"max_tokens": None},
-)
-
-PROVIDER_SILICONFLOW_CN = OpenAIProvider(
-    id="siliconflow-cn",
-    name="SiliconFlow (China)",
-    base_url="https://api.siliconflow.cn/v1",
-    api_key_prefix="sk-",
     models=[],
     freeze_url=True,
     require_api_key=True,
-)
-
-PROVIDER_SILICONFLOW_INTL = OpenAIProvider(
-    id="siliconflow-intl",
-    name="SiliconFlow (International)",
-    base_url="https://api.siliconflow.com/v1",
-    api_key_prefix="sk-",
-    models=[],
-    freeze_url=True,
-    require_api_key=True,
+    support_model_discovery=True,
 )
 
 
@@ -762,6 +87,8 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
         except Exception as e:
             logger.warning("Failed to migrate legacy providers: %s", e)
         self._init_from_storage()
+        self._apply_onerouter_env_config()
+        self._normalize_active_model_for_locked_gateway()
         self._apply_default_annotations()
 
     def _prepare_disk_storage(self):
@@ -779,30 +106,7 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
                 pass
 
     def _init_builtins(self):
-        self._add_builtin(PROVIDER_QWENPAW)
-        self._add_builtin(PROVIDER_OLLAMA)
-        self._add_builtin(PROVIDER_LMSTUDIO)
-        self._add_builtin(PROVIDER_OPENROUTER)
-        self._add_builtin(PROVIDER_MODELSCOPE)
-        self._add_builtin(PROVIDER_DASHSCOPE)
-        self._add_builtin(PROVIDER_ALIYUN_CODINGPLAN)
-        self._add_builtin(PROVIDER_ALIYUN_CODINGPLAN_INTL)
-        self._add_builtin(PROVIDER_OPENCODE)
-        self._add_builtin(PROVIDER_OPENAI)
-        self._add_builtin(PROVIDER_AZURE_OPENAI)
-        self._add_builtin(PROVIDER_ANTHROPIC)
-        self._add_builtin(PROVIDER_GEMINI)
-        self._add_builtin(PROVIDER_DEEPSEEK)
-        self._add_builtin(PROVIDER_KIMI_CN)
-        self._add_builtin(PROVIDER_KIMI_INTL)
-        self._add_builtin(PROVIDER_MINIMAX_CN)
-        self._add_builtin(PROVIDER_MINIMAX)
-        self._add_builtin(PROVIDER_ZHIPU_CN)
-        self._add_builtin(PROVIDER_ZHIPU_CN_CODINGPLAN)
-        self._add_builtin(PROVIDER_ZHIPU_INTL)
-        self._add_builtin(PROVIDER_ZHIPU_INTL_CODINGPLAN)
-        self._add_builtin(PROVIDER_SILICONFLOW_CN)
-        self._add_builtin(PROVIDER_SILICONFLOW_INTL)
+        self._add_builtin(PROVIDER_ONEROUTER)
 
     def _add_builtin(self, provider: Provider):
         self.builtin_providers[provider.id] = provider
@@ -977,22 +281,12 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
         return resolved_id
 
     async def add_custom_provider(self, provider_data: ProviderInfo):
-        # Add a new custom provider with the given data. This will update the
-        # providers.json file and make the new provider available in the UI.
-        provider_payload = provider_data.model_dump()
-        provider_payload["id"] = self._resolve_custom_provider_id(
-            provider_data.id,
+        raise ProviderError(
+            message=(
+                "Custom LLM providers are disabled. "
+                "Use the built-in OneRouter OpenAI-compatible gateway only."
+            ),
         )
-        provider_payload["is_custom"] = True
-        provider = self._provider_from_data(
-            provider_payload,
-        )  # Validate provider data
-        # For custom providers, we assume they don't support connection check
-        # without model config, to avoid false negatives in the UI.
-        provider.support_connection_check = False
-        self.custom_providers[provider.id] = provider
-        self._save_provider(provider, is_builtin=False)
-        return await provider.get_info()
 
     def remove_custom_provider(self, provider_id: str) -> bool:
         # Remove a custom provider by its ID. This will update the
@@ -1017,10 +311,22 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
                 message=f"Provider '{provider_id}' not found.",
             )
         if not provider.has_model(model_id):
-            raise ModelNotFoundException(
-                model_name=f"{provider_id}/{model_id}",
-                details={"provider_id": provider_id, "model_id": model_id},
-            )
+            if provider_id == ONEROUTER_PROVIDER_ID and (model_id or "").strip():
+                mid = model_id.strip()
+                added, err = await provider.add_model(
+                    ModelInfo(id=mid, name=mid),
+                )
+                if not added:
+                    raise ProviderError(message=err)
+                self._save_provider(
+                    provider,
+                    is_builtin=provider_id in self.builtin_providers,
+                )
+            else:
+                raise ModelNotFoundException(
+                    model_name=f"{provider_id}/{model_id}",
+                    details={"provider_id": provider_id, "model_id": model_id},
+                )
         self.active_model = ModelSlotConfig(
             provider_id=provider_id,
             model=model_id,
@@ -1567,11 +873,7 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
                             model.generate_kwargs = stored_model_kwargs[
                                 model.id
                             ]
-        # Load custom providers
-        for provider_file in self.custom_path.glob("*.json"):
-            provider = self.load_provider(provider_file.stem, is_builtin=False)
-            if provider:
-                self.custom_providers[provider.id] = provider
+        # Custom LLM providers are disabled (single OpenAI-compatible gateway).
         # Load active model config
         active_model = self.load_active_model()
         if active_model:
@@ -1579,6 +881,73 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
 
         # Migrate copaw-local to qwenpaw-local for backwards compatibility
         self._migrate_copaw_config()
+
+    def _apply_onerouter_env_config(self) -> None:
+        """Apply API key and base URL from environment to the sole gateway."""
+        prov = self.builtin_providers.get(ONEROUTER_PROVIDER_ID)
+        if not prov:
+            return
+        url = EnvVarLoader.get_str("QWENPAW_ONEROUTER_BASE_URL", "").strip()
+        prov.base_url = (url or ONEROUTER_DEFAULT_BASE_URL).rstrip("/")
+        key = EnvVarLoader.get_str("QWENPAW_ONEROUTER_API_KEY", "").strip()
+        if not key:
+            key = EnvVarLoader.get_str("ONEROUTER_API_KEY", "").strip()
+        if not key:
+            # Common when using OpenAI-compatible gateways with generic .env naming
+            key = EnvVarLoader.get_str("OPENAI_API_KEY", "").strip()
+        if key:
+            prov.api_key = key
+
+    def _normalize_active_model_for_locked_gateway(self) -> None:
+        """Force global active LLM to the built-in OneRouter gateway."""
+        oid = ONEROUTER_PROVIDER_ID
+        prov = self.get_provider(oid)
+        if not prov:
+            return
+        default_model = EnvVarLoader.get_str(
+            "QWENPAW_ONEROUTER_DEFAULT_MODEL",
+            "",
+        ).strip()
+
+        def _onerouter_allows_blank_model() -> bool:
+            return onerouter_omit_model_in_request() and not default_model
+
+        def _slot_ok(slot: ModelSlotConfig | None) -> bool:
+            if not slot or not slot.provider_id:
+                return False
+            p = self.get_provider(slot.provider_id)
+            if p is None or p.id != oid:
+                return False
+            if (slot.model or "").strip():
+                return True
+            return _onerouter_allows_blank_model()
+
+        if not _slot_ok(self.active_model):
+            raw = ""
+            if self.active_model and self.active_model.model:
+                raw = self.active_model.model.strip()
+            merged = default_model or raw
+            mid = ProviderManager.resolve_effective_llm_model_id(oid, merged)
+            self.active_model = ModelSlotConfig(provider_id=oid, model=mid)
+            self.save_active_model(self.active_model)
+        elif self.active_model and self.active_model.provider_id != oid:
+            raw = (
+                self.active_model.model.strip()
+                if self.active_model.model
+                else ""
+            )
+            merged = default_model or raw
+            mid = ProviderManager.resolve_effective_llm_model_id(oid, merged)
+            self.active_model = ModelSlotConfig(provider_id=oid, model=mid)
+            self.save_active_model(self.active_model)
+        else:
+            mid = ProviderManager.resolve_effective_llm_model_id(
+                oid,
+                self.active_model.model,
+            )
+            if (self.active_model.model or "").strip() != mid:
+                self.active_model = ModelSlotConfig(provider_id=oid, model=mid)
+                self.save_active_model(self.active_model)
 
     def _apply_default_annotations(self):
         """Apply doc-based default annotations for unprobed models.
@@ -1619,6 +988,8 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
 
     async def _resume_local_model(self, local_manager) -> None:
         """Resume the active local model server from the previous run."""
+        if self.get_provider("qwenpaw-local") is None:
+            return
 
         def _clear_local_provider():
             self.update_provider(
@@ -1773,11 +1144,56 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
         return ProviderManager._instance
 
     @staticmethod
+    def resolve_effective_llm_model_id(
+        provider_id: str,
+        configured_model_id: str,
+    ) -> str:
+        """Resolve model id for OneRouter (OpenAI-compatible chat completions).
+
+        Priority:
+        1. ``QWENPAW_ONEROUTER_DEFAULT_MODEL`` when set (always returned; sent
+           as the JSON ``model`` field).
+        2. When ``onerouter_omit_model_in_request()`` is True: stored id if
+           non-empty and not legacy Baichuan; otherwise ``""`` (no ``model`` in
+           the HTTP body — gateway routes from the key).
+        3. When omit is False: ``ONEROUTER_FALLBACK_MODEL_ID`` for empty or
+           legacy Baichuan ids; else the stored id.
+        """
+        if provider_id != ONEROUTER_PROVIDER_ID:
+            return configured_model_id
+        forced = EnvVarLoader.get_str(
+            "QWENPAW_ONEROUTER_DEFAULT_MODEL",
+            "",
+        ).strip()
+        if forced:
+            return forced
+        mid = (configured_model_id or "").strip()
+        if onerouter_omit_model_in_request():
+            if not mid or "baichuan" in mid.lower():
+                return ""
+            return mid
+        if not mid or "baichuan" in mid.lower():
+            return ONEROUTER_FALLBACK_MODEL_ID
+        return mid
+
+    @staticmethod
     def get_active_chat_model() -> ChatModelBase:
         """Get the currently active provider/model configuration."""
         manager = ProviderManager.get_instance()
         model = manager.get_active_model()
-        if model is None or model.provider_id == "" or model.model == "":
+        if model is None or model.provider_id == "":
+            raise ProviderError(
+                message="No active model configured.",
+            )
+        allow_blank = (
+            model.provider_id == ONEROUTER_PROVIDER_ID
+            and onerouter_omit_model_in_request()
+            and not EnvVarLoader.get_str(
+                "QWENPAW_ONEROUTER_DEFAULT_MODEL",
+                "",
+            ).strip()
+        )
+        if model.model == "" and not allow_blank:
             raise ProviderError(
                 message="No active model configured.",
             )
@@ -1786,4 +1202,8 @@ class ProviderManager:  # pylint: disable=too-many-public-methods
             raise ProviderError(
                 message=f"Active provider '{model.provider_id}' not found.",
             )
-        return provider.get_chat_model_instance(model.model)
+        mid = ProviderManager.resolve_effective_llm_model_id(
+            model.provider_id,
+            model.model,
+        )
+        return provider.get_chat_model_instance(mid)
