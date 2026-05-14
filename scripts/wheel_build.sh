@@ -11,6 +11,10 @@ CONSOLE_DEST="$REPO_ROOT/src/qwenpaw/console"
 
 echo "[wheel_build] Building console frontend..."
 (cd "$CONSOLE_DIR" && npm ci)
+# Same default as macOS desktop CI; avoids Vite OOM on constrained runners.
+if [ -z "${NODE_OPTIONS:-}" ]; then
+  export NODE_OPTIONS="--max-old-space-size=8192"
+fi
 (cd "$CONSOLE_DIR" && npm run build)
 
 echo "[wheel_build] Copying console/dist/* -> src/qwenpaw/console/..."

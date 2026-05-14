@@ -69,6 +69,9 @@ jobs:
 
       - name: Build Windows installer
         shell: pwsh
+        env:
+          # Vite production build can exceed Node default heap (~2GB) on windows-latest.
+          NODE_OPTIONS: "--max-old-space-size=8192"
         run: conda run -n qwenpaw-build pwsh -File ./scripts/pack/build_win.ps1
 
       - name: List dist (on failure)

@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && node scripts/build-search-index.mjs && vite build && node scripts/spa-fallback-pages.mjs",
+    "dev": "node api.js && vite",
+    "build": "node api.js && tsc -b && node scripts/build-search-index.mjs && vite build && node scripts/spa-fallback-pages.mjs",
     "format": "tsc -b --noEmit && prettier --write .",
     "format:check": "tsc -b --noEmit && prettier --check .",
     "preview": "vite preview"

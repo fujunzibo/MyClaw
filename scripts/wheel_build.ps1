@@ -9,6 +9,10 @@ $ConsoleDir = Join-Path $RepoRoot "console"
 $ConsoleDest = Join-Path $RepoRoot "src\qwenpaw\console"
 
 Write-Host "[wheel_build] Building console frontend..."
+# Vite can OOM on default Node heap (CI / large bundle); align with macOS desktop workflow.
+if ([string]::IsNullOrWhiteSpace($env:NODE_OPTIONS)) {
+  $env:NODE_OPTIONS = "--max-old-space-size=8192"
+}
 Push-Location $ConsoleDir
 try {
   npm ci
@@ -28,13 +32,13 @@ if (Test-Path $ConsoleDest) {
 $ConsoleDist = Join-Path $ConsoleDir "dist"
 Copy-Item -Path (Join-Path $ConsoleDist "*") -Destination $ConsoleDest -Recurse -Force
 
-Write-Host "[wheel_build] Building wheel + sdist..."
+Write-Host "[wheel_build] Building wheel only (no sdist / no source tarball)..."
 python -m pip install --quiet build
 $DistDir = Join-Path $RepoRoot "dist"
 if (Test-Path $DistDir) {
   Remove-Item -Path (Join-Path $DistDir "*") -Force -ErrorAction SilentlyContinue
 }
-python -m build --outdir dist .
+python -m build --wheel --outdir dist .
 if ($LASTEXITCODE -ne 0) { throw "python -m build failed with exit code $LASTEXITCODE" }
 
 Write-Host "[wheel_build] Done. Wheel(s) in: $RepoRoot\dist\"
