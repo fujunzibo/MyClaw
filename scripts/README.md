@@ -8,7 +8,7 @@ Run from **repo root**.
 bash scripts/wheel_build.sh
 ```
 
-- Builds the console frontend (`console/`), copies `console/dist` to `src/qwenpaw/console/dist`, then builds the wheel. Output: `dist/*.whl`.
+- Builds the console frontend (`console/`), copies `console/dist` to `src/qwenpaw/console/`, then builds **wheel only** (no source `.tar.gz`). Output: `dist/*.whl`.
 
 ## Build website
 

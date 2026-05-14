@@ -111,7 +111,7 @@ def _resolve_md_lang_dir(agents_root: Path, language: str) -> Path:
 
 def _template_fallback_language_order(language: str) -> list[str]:
     ordered: list[str] = []
-    for lang_opt in (language, "en", "zh", "ru"):
+    for lang_opt in (language, "en", "zh", "ru", "ja", "ar"):
         if lang_opt not in ordered:
             ordered.append(lang_opt)
     return ordered

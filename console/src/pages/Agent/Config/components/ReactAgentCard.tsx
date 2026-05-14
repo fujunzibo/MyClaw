@@ -21,6 +21,7 @@ const LANGUAGE_OPTIONS = [
   { value: "zh", label: "中文" },
   { value: "en", label: "English" },
   { value: "ru", label: "Русский" },
+  { value: "ar", label: "العربية" },
 ];
 
 interface ReactAgentCardProps {

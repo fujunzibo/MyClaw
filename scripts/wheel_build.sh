@@ -19,9 +19,9 @@ rm -rf "$CONSOLE_DEST"/*
 mkdir -p "$CONSOLE_DEST"
 cp -R "$CONSOLE_DIR/dist/"* "$CONSOLE_DEST/"
 
-echo "[wheel_build] Building wheel + sdist..."
+echo "[wheel_build] Building wheel only (no sdist / no source tarball)..."
 python3 -m pip install --quiet build
 rm -rf dist/*
-python3 -m build --outdir dist .
+python3 -m build --wheel --outdir dist .
 
 echo "[wheel_build] Done. Wheel(s) in: $REPO_ROOT/dist/"

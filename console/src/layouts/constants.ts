@@ -64,12 +64,12 @@ export const KEY_TO_LABEL: Record<string, string> = {
 // ── URL helpers ───────────────────────────────────────────────────────────
 
 /**
- * Public docs / marketing site origin. Default: local Vite dev server for `website/`.
- * Override with `VITE_DOCS_SITE_URL` (e.g. other port or production site).
+ * Public docs / marketing site origin. Default: official site (matches README).
+ * For local `website/` dev, set `VITE_DOCS_SITE_URL` (e.g. http://127.0.0.1:5173).
  */
 export const PUBLIC_DOCS_SITE_BASE =
   import.meta.env.VITE_DOCS_SITE_URL?.trim().replace(/\/$/, "") ||
-  "http://127.0.0.1:5173";
+  "https://qwenpaw.agentscope.io";
 
 export const getWebsiteLang = (lang: string): string =>
   lang.startsWith("zh") ? "zh" : "en";

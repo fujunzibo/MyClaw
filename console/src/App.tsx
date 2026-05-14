@@ -12,6 +12,7 @@ import zhCN from "antd/locale/zh_CN";
 import enUS from "antd/locale/en_US";
 import jaJP from "antd/locale/ja_JP";
 import ruRU from "antd/locale/ru_RU";
+import arEG from "antd/locale/ar_EG";
 import type { Locale } from "antd/es/locale";
 import { theme as antdTheme } from "antd";
 import dayjs from "dayjs";
@@ -19,6 +20,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/zh-cn";
 import "dayjs/locale/ja";
 import "dayjs/locale/ru";
+import "dayjs/locale/ar";
 dayjs.extend(relativeTime);
 import MainLayout from "./layouts/MainLayout";
 import { ThemeProvider, useTheme } from "./contexts/ThemeContext";
@@ -39,6 +41,7 @@ const antdLocaleMap: Record<string, Locale> = {
   en: enUS,
   ja: jaJP,
   ru: ruRU,
+  ar: arEG,
 };
 
 const dayjsLocaleMap: Record<string, string> = {
@@ -46,6 +49,7 @@ const dayjsLocaleMap: Record<string, string> = {
   en: "en",
   ja: "ja",
   ru: "ru",
+  ar: "ar",
 };
 
 const GlobalStyle = createGlobalStyle`
@@ -123,8 +127,9 @@ function AppInner() {
   const { loading: pluginsLoading } = usePlugins();
   const selectedTheme = isDark ? bailianDarkTheme : bailianTheme;
   const lang = i18n.resolvedLanguage || i18n.language || "en";
+  const shortLang = lang.split("-")[0];
   const [antdLocale, setAntdLocale] = useState<Locale>(
-    antdLocaleMap[lang] ?? enUS,
+    antdLocaleMap[shortLang] ?? enUS,
   );
 
   useEffect(() => {
@@ -144,18 +149,18 @@ function AppInner() {
   }, []);
 
   useEffect(() => {
-    const handleLanguageChanged = (lng: string) => {
+    const applyLanguage = (lng: string) => {
       const shortLng = lng.split("-")[0];
       setAntdLocale(antdLocaleMap[shortLng] ?? enUS);
       dayjs.locale(dayjsLocaleMap[shortLng] ?? "en");
+      document.documentElement.dir = shortLng === "ar" ? "rtl" : "ltr";
+      document.documentElement.lang = shortLng;
     };
 
-    // Set initial dayjs locale
-    dayjs.locale(dayjsLocaleMap[lang.split("-")[0]] ?? "en");
-
-    i18n.on("languageChanged", handleLanguageChanged);
+    applyLanguage(i18n.language);
+    i18n.on("languageChanged", applyLanguage);
     return () => {
-      i18n.off("languageChanged", handleLanguageChanged);
+      i18n.off("languageChanged", applyLanguage);
     };
   }, [i18n]);
 
@@ -171,6 +176,7 @@ function AppInner() {
         {...selectedTheme}
         prefix="qwenpaw"
         prefixCls="qwenpaw"
+        direction={shortLang === "ar" ? "rtl" : "ltr"}
         locale={antdLocale}
         theme={{
           ...(selectedTheme as any)?.theme,

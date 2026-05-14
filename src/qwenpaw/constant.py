@@ -163,7 +163,7 @@ def _discover_agent_languages() -> frozenset[str]:
         }
         if langs:
             return frozenset(langs)
-    return frozenset({"en", "zh", "ru"})
+    return frozenset({"en", "zh", "ru", "ja", "ar"})
 
 
 SUPPORTED_AGENT_LANGUAGES: frozenset[str] = _discover_agent_languages()

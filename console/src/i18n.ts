@@ -4,6 +4,7 @@ import en from "./locales/en.json";
 import ru from "./locales/ru.json";
 import zh from "./locales/zh.json";
 import ja from "./locales/ja.json";
+import ar from "./locales/ar.json";
 const resources = {
   en: {
     translation: en,
@@ -16,6 +17,9 @@ const resources = {
   },
   ja: {
     translation: ja,
+  },
+  ar: {
+    translation: ar,
   },
 };
 

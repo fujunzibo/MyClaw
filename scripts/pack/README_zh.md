@@ -7,6 +7,33 @@
 - **Windows**: wheel → conda-pack → 解压 → NSIS 安装包 (`.exe`)
 - **macOS**: wheel → conda-pack → 解压到 `.app` → 可选打 zip
 
+## 目标：两个分发文件（Windows `.exe` + macOS `.zip`）
+
+最终交给用户下载的通常是下面两个文件（版本号与 `src/qwenpaw/__version__.py` 一致）：
+
+| 平台 | 文件名示例 | 说明 |
+|------|------------|------|
+| **Windows** | `dist/QwenPaw-Setup-<版本>.exe` | NSIS 安装包，双击安装 |
+| **macOS** | `dist/QwenPaw-<版本>-macOS.zip` | 解压后得到 `QwenPaw.app`，**不要**只压缩 `.app` 子目录时弄丢包结构 |
+
+**注意：无法在单一操作系统上同时生成这两种产物。** NSIS 安装包必须在 **Windows**（或 Windows _runner）上编；带正确权限位与 `ditto` 的 **`.app` + zip** 必须在 **macOS** 上编。
+
+### 方案 A（推荐）：用 GitHub Actions 一次打出两个产物
+
+1. 把当前仓库推到 GitHub（或在你有权限的 fork 上操作）。
+2. 打开 **Actions** → 工作流 **「QwenPaw Desktop Build」**（文件：`.github/workflows/desktop-release.yml`）。
+3. 点 **Run workflow**（手动 `workflow_dispatch`），按需勾选是否上传 OSS。
+4. 等待 **build-windows** 与 **build-macos** 两个 Job 全部成功。
+5. 在该次运行的页面底部 **Artifacts** 中下载：
+   - **`QwenPaw-Desktop-Windows-<版本>`**：内含 `QwenPaw-Setup-<版本>.exe`
+   - **`QwenPaw-Desktop-macOS-<版本>`**：内含 `QwenPaw-<版本>-macOS.zip`  
+   若是在 **Release** 上自动触发的构建，同一版本的两个文件也会作为 **Release 附件**上传（见工作流 `upload-release`）。
+
+### 方案 B：本地两台机器分别构建
+
+- **Windows 电脑**：安装 **Miniconda/Anaconda**、**Node.js**、**NSIS**（`makensis` 在 PATH），在仓库根目录执行 `./scripts/pack/build_win.ps1`，在 **`dist/`** 取 `.exe`。
+- **macOS 电脑**：安装 **conda**、**Node.js**，在仓库根目录执行 `CREATE_ZIP=1 bash ./scripts/pack/build_macos.sh`，在 **`dist/`** 取 `QwenPaw-<版本>-macOS.zip`（同时会有 `QwenPaw.app`，zip 为分发用）。
+
 ## 系统要求
 
 - **Windows**: Windows 10 或更高版本

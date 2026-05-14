@@ -1,6 +1,8 @@
+import type { ReactElement } from "react";
 import { Dropdown } from "@agentscope-ai/design";
 import { useTranslation } from "react-i18next";
 import { Button, type MenuProps } from "antd";
+import { GlobalOutlined } from "@ant-design/icons";
 import { languageApi } from "../../api/modules/language";
 import styles from "./index.module.less";
 import {
@@ -47,13 +49,19 @@ export default function LanguageSwitcher() {
       label: "Русский",
       onClick: () => changeLanguage("ru"),
     },
+    {
+      key: "ar",
+      label: "العربية",
+      onClick: () => changeLanguage("ar"),
+    },
   ];
 
-  const LIGHT_ICON: Record<string, React.ReactElement> = {
+  const LIGHT_ICON: Record<string, ReactElement> = {
     en: <SparkEnglish02Line />,
     zh: <SparkChinese02Line />,
     ja: <SparkJapanLine />,
     ru: <SparkRusLine />,
+    ar: <GlobalOutlined />,
   };
 
   return (
